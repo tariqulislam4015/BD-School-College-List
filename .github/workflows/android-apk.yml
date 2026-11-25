@@ -1,0 +1,56 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Put the web app inside the APK
+        run: |
+          A=android/app/src/main/assets
+          cp index.html manifest.webmanifest "$A/"
+          mkdir -p "$A/icons" && cp icons/*.png "$A/icons/"
+
+      - name: Build signed APK
+        working-directory: android
+        run: gradle assembleRelease --no-daemon --stacktrace
+
+      - name: Rename
+        run: cp android/app/build/outputs/apk/release/app-release.apk EduAtlas-Bangladesh.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: EduAtlas-Bangladesh-apk
+          path: EduAtlas-Bangladesh.apk
+
+      - name: Publish release (download link stays the same)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: শিক্ষা অ্যাটলাস বাংলাদেশ v1.0.${{ github.run_number }}
+          body: |
+            📱 Android অ্যাপ: নিচের **EduAtlas-Bangladesh.apk** ডাউনলোড করে ইনস্টল করুন।
+            প্রথমবার ইনস্টলের সময় ফোনে “Install unknown apps” অনুমতি দিতে হতে পারে।
+            🌐 ওয়েব: https://tariqulislam4015.github.io/BD-School-College-List/
+          files: EduAtlas-Bangladesh.apk
+          make_latest: true

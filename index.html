@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>শিক্ষা অ্যাটলাস বাংলাদেশ</title>
+<meta name="theme-color" content="#006a4e">
+<meta name="description" content="বাংলাদেশের শিক্ষাপ্রতিষ্ঠান ও মসজিদ, এক মানচিত্রে: EIIN, এলাকা, Google Maps লোকেশন">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Baloo+Da+2:wght@600;700;800&display=swap" rel="stylesheet">
@@ -140,6 +145,10 @@ dialog::backdrop{background:rgba(0,20,12,.55)}
 footer{background:#06281d;color:#cfe3da;font-size:14px}
 footer .wrap{padding-block:26px;display:flex;flex-wrap:wrap;gap:10px 30px;justify-content:space-between}
 footer a{color:#fff}
+.getapp{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.getapp a,.getapp button{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:14px;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;cursor:pointer;font:inherit;font-weight:700;transition:transform .2s,background .2s}
+.getapp a:hover,.getapp button:hover{transform:translateY(-2px);background:rgba(255,255,255,.22)}
+.getapp .apk{background:#fff;color:#006a4e;border-color:#fff}
 .toast{position:fixed;z-index:3000;left:50%;bottom:22px;transform:translate(-50%,140%);background:#10231c;color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;transition:transform .35s;max-width:92vw}
 .toast.on{transform:translate(-50%,0)}
 .leaflet-popup-content{font-family:"Hind Siliguri",sans-serif;font-size:14px;margin:12px 14px}
@@ -148,8 +157,14 @@ footer a{color:#fff}
 .prog{height:14px;background:var(--g2);border-radius:9px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#006a4e,#16a34a);transition:width .4s}
 .dchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;max-height:190px;overflow:auto}
 .dc{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--g2);color:var(--mute)}.dc.ok{background:#006a4e;color:#fff}.dc.run{background:var(--gold);color:#3b2a00}.dc.err{background:var(--r);color:#fff}
+.kinds{display:flex;gap:4px;background:var(--g2);border-radius:999px;padding:4px}
+.kinds button{border:0;background:none;padding:7px 14px;border-radius:999px;font-weight:700;cursor:pointer;min-height:40px;white-space:nowrap;transition:background .25s,color .25s}
+.kinds button[aria-pressed=true]{background:var(--g);color:#fff;box-shadow:0 4px 12px -4px rgba(0,80,50,.5)}
+body[data-kind=mosque] .hero{background:linear-gradient(135deg,#0f4c3a 0%,#0b3a2c 60%,#072a20 100%)}
+body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
+.kmark{display:inline-block;animation:rise .5s both}
 @media(max-width:980px){.app{grid-template-columns:minmax(0,1fr)}.rail{position:static;max-height:none}.hero .wrap{grid-template-columns:minmax(0,1fr)}.prof{max-width:440px;width:100%;margin:0 auto}}
-@media(max-width:600px){.form{grid-template-columns:minmax(0,1fr)}.nav{display:none}.legend{max-width:75%;font-size:12px}}
+@media(max-width:600px){.form{grid-template-columns:minmax(0,1fr)}.nav{display:none}.kinds{margin-left:auto}.kinds button{padding:7px 10px;font-size:14px}.legend{max-width:75%;font-size:12px}}
 </style>
 </head>
 <body>
@@ -165,13 +180,14 @@ footer a{color:#fff}
     </svg>
     <span><b>শিক্ষা অ্যাটলাস</b><small>EduAtlas Bangladesh</small></span>
   </a>
-  <nav class="nav"><a href="#explore">মানচিত্র</a><a href="#list">তালিকা</a><a href="#db">ডাটাবেস</a><a href="#add">প্রতিষ্ঠান যোগ</a><a href="#creator">নির্মাতা</a></nav>
+  <div class="kinds" role="group" aria-label="বিভাগ বাছুন"><button id="kindEdu" aria-pressed="true">🎓 শিক্ষাপ্রতিষ্ঠান</button><button id="kindMos" aria-pressed="false">🕌 মসজিদ</button></div>
+  <nav class="nav"><a href="#explore">মানচিত্র</a><a href="#list">তালিকা</a><a href="#db">ডাটাবেস</a><a href="#add">নতুন যোগ</a><a href="#creator">নির্মাতা</a></nav>
 </div></header>
 
 <section class="hero" id="top"><div class="wrap">
   <div>
-    <h1>বাংলাদেশের প্রতিটি শিক্ষাপ্রতিষ্ঠান, এক মানচিত্রে</h1>
-    <p>বিভাগ → জেলা → উপজেলা → ইউনিয়ন → ওয়ার্ড, সিটি কর্পোরেশন, শহর ও ডাকঘর ধরে খুঁজুন: শিশু নিকেতন, ক্যাডেট, প্রাথমিক, উচ্চ বিদ্যালয়, কলেজ, মাদরাসা ও বিশ্ববিদ্যালয়। সরকারি BANBEIS তালিকা থেকে EIIN, মোবাইল, ব্যবস্থাপনা ও স্তরসহ সব তথ্য অনলাইন থেকে এনে নিজে থেকেই সংরক্ষণ হয়; যা নেই তা আপনি নিজেই যোগ করতে পারবেন।</p>
+    <h1>বাংলাদেশের শিক্ষাপ্রতিষ্ঠান ও মসজিদ, এক মানচিত্রে</h1>
+    <p>বিভাগ → জেলা → উপজেলা → ইউনিয়ন → ওয়ার্ড, সিটি কর্পোরেশন, শহর ও ডাকঘর ধরে খুঁজুন: মসজিদ, ঈদগাহ, শিশু নিকেতন, ক্যাডেট, প্রাথমিক, উচ্চ বিদ্যালয়, কলেজ, মাদরাসা ও বিশ্ববিদ্যালয়। সরকারি BANBEIS তালিকা থেকে EIIN, মোবাইল, ব্যবস্থাপনা ও স্তরসহ সব তথ্য অনলাইন থেকে এনে নিজে থেকেই সংরক্ষণ হয়; যা নেই তা আপনি নিজেই যোগ করতে পারবেন।</p>
     <div class="kpis">
       <div class="kpi"><b id="kDiv">–</b><span>বিভাগ</span></div>
       <div class="kpi"><b id="kDis">–</b><span>জেলা</span></div>
@@ -181,6 +197,11 @@ footer a{color:#fff}
       <div class="kpi"><b id="kPo">–</b><span>ডাকঘর</span></div>
       <div class="kpi"><b id="kSaved">০</b><span>সংরক্ষিত প্রতিষ্ঠান</span></div>
       <div class="kpi"><b id="kEiin">০</b><span>EIIN-সহ প্রতিষ্ঠান</span></div>
+      <div class="kpi"><b id="kMosq">০</b><span>সংরক্ষিত মসজিদ</span></div>
+    </div>
+    <div class="getapp" id="getapp">
+      <a class="apk" href="https://github.com/tariqulislam4015/BD-School-College-List/releases/latest/download/EduAtlas-Bangladesh.apk" target="_blank" rel="noopener">📱 Android অ্যাপ (APK) ডাউনলোড</a>
+      <button id="pwaBtn" type="button">📲 ফোনে ইনস্টল করুন</button>
     </div>
   </div>
   <aside class="prof" id="creator" aria-label="নির্মাতা">
@@ -206,7 +227,7 @@ footer a{color:#fff}
 
 <main>
 <section class="band" id="explore"><div class="wrap">
-  <h2>এলাকা বেছে নিন, প্রতিষ্ঠান দেখুন</h2>
+  <h2 id="tExplore">এলাকা বেছে নিন, প্রতিষ্ঠান দেখুন</h2>
   <p class="sub">জেলা বা সিটি কর্পোরেশন বাছলেই খোঁজা যাবে। যত ছোট এলাকা বাছবেন (উপজেলা, ইউনিয়ন, ডাকঘর, শহর), ফলাফল তত নির্দিষ্ট ও দ্রুত হবে।</p>
   <div class="app">
     <div class="panel rail">
@@ -229,7 +250,7 @@ footer a{color:#fff}
       <label class="f" for="sPo">ডাকঘর (পোস্ট অফিস) ও পোস্টকোড</label><select id="sPo" disabled></select>
       <div class="crumb" id="crumb">বাংলাদেশ</div>
       <div class="row" style="margin-top:12px">
-        <button class="btn p" id="go" disabled>🔍 প্রতিষ্ঠান খুঁজুন</button>
+        <button class="btn p" id="go" disabled>🔍 <span id="tGo">প্রতিষ্ঠান খুঁজুন</span></button>
       </div>
       <div class="row" style="margin-top:8px">
         <button class="btn s" id="near">📍 আমার আশেপাশে</button>
@@ -264,17 +285,17 @@ footer a{color:#fff}
 </div></section>
 
 <section class="band" id="db"><div class="wrap">
-  <h2>সংরক্ষিত ডাটাবেস</h2>
+  <h2 id="tDb">সংরক্ষিত ডাটাবেস</h2>
   <p class="sub">অনলাইনে যা পাওয়া যায়, সব নিজে থেকেই এই ডিভাইসে স্থায়ীভাবে জমা হয়। পরে ইন্টারনেট ছাড়াও দেখা যাবে। পুরো দেশের ডেটা একবারে জমা করতে নিচের বোতাম চাপুন (৬৪ জেলা, প্রায় ২০–৪০ মিনিট; মাঝপথে থামালে পরে যেখান থেকে থেমেছিল সেখান থেকে চলবে)।</p>
   <div class="app" style="grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)">
     <div class="panel">
       <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-        <div class="kpi" style="background:var(--g2);border-color:var(--line)"><b id="dbTotal" style="color:var(--g)">০</b><span>প্রতিষ্ঠান</span></div>
+        <div class="kpi" style="background:var(--g2);border-color:var(--line)"><b id="dbTotal" style="color:var(--g)">০</b><span id="tDbN">প্রতিষ্ঠান</span></div>
         <div class="kpi" style="background:var(--g2);border-color:var(--line)"><b id="dbDis" style="color:var(--g)">০/৬৪</b><span>জেলা সম্পূর্ণ</span></div>
         <div class="kpi" style="background:var(--g2);border-color:var(--line)"><b id="dbMine" style="color:var(--g)">০</b><span>নিজে যোগ করা</span></div>
       </div>
-      <div class="crumb" id="eiinStat" style="margin-top:12px">EIIN ডাটাবেস: লোড হচ্ছে…</div>
-      <div class="row" style="margin-top:8px"><button class="btn s" id="eiinRe">⟳ EIIN তালিকা অনলাইন থেকে হালনাগাদ</button></div>
+      <div class="crumb" id="eiinStat" data-edu style="margin-top:12px">EIIN ডাটাবেস: লোড হচ্ছে…</div>
+      <div class="row" data-edu style="margin-top:8px"><button class="btn s" id="eiinRe">⟳ EIIN তালিকা অনলাইন থেকে হালনাগাদ</button></div>
       <div class="stats" id="dbStats" style="margin-top:12px"></div>
       <p class="note" id="dbWhen"></p>
     </div>
@@ -299,12 +320,12 @@ footer a{color:#fff}
 </div></section>
 
 <section class="band" id="add" style="background:var(--card);border-top:1px solid var(--line)"><div class="wrap">
-  <h2>নতুন প্রতিষ্ঠান যোগ করুন</h2>
+  <h2 id="tAdd">নতুন প্রতিষ্ঠান যোগ করুন</h2>
   <p class="sub">তালিকায় না থাকলে এখানে যোগ করুন। উপরে বাছাই করা এলাকা নিজে থেকেই বসে যাবে। “ম্যাপে অবস্থান বাছুন” চেপে ম্যাপে ক্লিক করুন।</p>
   <form id="af" class="form" autocomplete="off">
-    <div class="full"><label class="f" for="aName">প্রতিষ্ঠানের নাম *</label><input id="aName" required placeholder="যেমন: চর আলগী সরকারি প্রাথমিক বিদ্যালয়"></div>
+    <div class="full"><label class="f" for="aName" id="tName">প্রতিষ্ঠানের নাম *</label><input id="aName" required placeholder="যেমন: চর আলগী সরকারি প্রাথমিক বিদ্যালয়"></div>
     <div><label class="f" for="aCat">ধরন *</label><select id="aCat" required></select></div>
-    <div><label class="f" for="aEiin">EIIN (ঐচ্ছিক)</label><input id="aEiin" inputmode="numeric" placeholder="যেমন: 123456"></div>
+    <div id="eiinWrap"><label class="f" for="aEiin">EIIN (ঐচ্ছিক)</label><input id="aEiin" inputmode="numeric" placeholder="যেমন: 123456"></div>
     <div><label class="f" for="aLat">অক্ষাংশ (Latitude) *</label><input id="aLat" required inputmode="decimal"></div>
     <div><label class="f" for="aLon">দ্রাঘিমাংশ (Longitude) *</label><input id="aLon" required inputmode="decimal"></div>
     <div><label class="f" for="aPhone">ফোন (ঐচ্ছিক)</label><input id="aPhone" inputmode="tel"></div>
@@ -316,7 +337,7 @@ footer a{color:#fff}
       <button type="submit" class="btn p" id="save">✔ সংরক্ষণ করুন</button>
     </div>
   </form>
-  <h3 style="margin:26px 0 4px">আমার যোগ করা প্রতিষ্ঠান (<span id="mineN">০</span>)</h3>
+  <h3 style="margin:26px 0 4px">আমার যোগ করা <span id="tMine">প্রতিষ্ঠান</span> (<span id="mineN">০</span>)</h3>
   <p class="note">এগুলো আপনার ব্রাউজারে জমা থাকে। Export করে ফাইল শেয়ার করুন, অন্যজন Import করে নিতে পারবেন। সবার জন্য স্থায়ীভাবে যোগ করতে নিচের OpenStreetMap বোতাম ব্যবহার করুন; কয়েক মিনিটের মধ্যে এই অ্যাপেও সবার কাছে দেখা যাবে।</p>
   <div class="row" style="margin-top:10px;max-width:720px">
     <button class="btn s" id="exp">⬇ Export (JSON)</button>
@@ -354,7 +375,25 @@ const CATS=[
  {k:'cadet',n:'ক্যাডেট কলেজ / স্কুল',c:'#7c3aed'},
  {k:'university',n:'বিশ্ববিদ্যালয়',c:'#be185d'},
  {k:'technical',n:'কারিগরি / পলিটেকনিক',c:'#ea580c'},
- {k:'other',n:'অন্যান্য স্কুল (ধরন অনির্ধারিত)',c:'#64748b'}];
+ {k:'other',n:'অন্যান্য স্কুল (ধরন অনির্ধারিত)',c:'#64748b'},
+ {k:'jame',n:'জামে মসজিদ',c:'#047857',kind:'mosque'},
+ {k:'waqtia',n:'ওয়াক্তিয়া / পাঞ্জেগানা মসজিদ',c:'#0891b2',kind:'mosque'},
+ {k:'eidgah',n:'ঈদগাহ ময়দান',c:'#b45309',kind:'mosque'},
+ {k:'markaz',n:'মারকাজ / কেন্দ্রীয় মসজিদ',c:'#7c3aed',kind:'mosque'},
+ {k:'masjid',n:'মসজিদ (ধরন অনির্ধারিত)',c:'#475569',kind:'mosque'}];
+/* ---- partitions: edu (শিক্ষাপ্রতিষ্ঠান) and mosque (মসজিদ) ---- */
+let KIND=(()=>{try{return location.hash==='#mosque'?'mosque':'edu'}catch(e){return'edu'}})();
+const kOf=x=>x.kind||'edu';
+const KC=()=>CATS.filter(c=>(c.kind||'edu')===KIND);
+const TX={edu:{n:'প্রতিষ্ঠান',ex:'এলাকা বেছে নিন, প্রতিষ্ঠান দেখুন',go:'প্রতিষ্ঠান খুঁজুন',db:'সংরক্ষিত ডাটাবেস: শিক্ষাপ্রতিষ্ঠান',add:'নতুন প্রতিষ্ঠান যোগ করুন',name:'প্রতিষ্ঠানের নাম *',ph:'যেমন: চর আলগী সরকারি প্রাথমিক বিদ্যালয়',q:'নাম বা EIIN দিয়ে খুঁজুন…',busy:'অনলাইন সার্ভার থেকে শিক্ষাপ্রতিষ্ঠান আনা হচ্ছে…',title:'শিক্ষা অ্যাটলাস বাংলাদেশ'},
+  mosque:{n:'মসজিদ',ex:'এলাকা বেছে নিন, মসজিদ দেখুন',go:'মসজিদ খুঁজুন',db:'সংরক্ষিত ডাটাবেস: মসজিদ',add:'নতুন মসজিদ / ঈদগাহ যোগ করুন',name:'মসজিদের নাম *',ph:'যেমন: বায়তুল আমান জামে মসজিদ',q:'মসজিদের নাম দিয়ে খুঁজুন…',busy:'অনলাইন সার্ভার থেকে মসজিদ আনা হচ্ছে…',title:'মসজিদ অ্যাটলাস · শিক্ষা অ্যাটলাস বাংলাদেশ'}};
+const T=()=>TX[KIND];
+function classifyMosque(t){const n=[t.name,t['name:en'],t['name:bn'],t.official_name].join(' ');
+  if(/eid ?gah|idgah|eidgaah|ঈদগাহ|ইদগাহ|ঈদগা/i.test(n))return'eidgah';
+  if(/markaz|মারকাজ|central|কেন্দ্রীয়|baitul mukarram|বায়তুল মোকাররম|national mosque/i.test(n))return'markaz';
+  if(/waqtia|wakti|oaktia|panjegana|panjeg|ওয়াক্তিয়া|ওয়াক্তিয়া|পাঞ্জেগানা/i.test(n))return'waqtia';
+  if(/jame|jami|jome|jum|zame|জামে|জামি|জুমা/i.test(n))return'jame';
+  return'masjid'}
 const CAT=Object.fromEntries(CATS.map(c=>[c.k,c]));
 const RX={
  cadet:/cadet|ক্যাডেট/i,
@@ -414,7 +453,7 @@ const sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Worl
 const topo=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,attribution:'OpenTopoMap'});
 L.control.layers({'রাস্তার ম্যাপ':osm,'স্যাটেলাইট':sat,'টপো':topo}).addTo(map);
 const layer=L.layerGroup().addTo(map),areaL=L.layerGroup().addTo(map);
-$('legend').innerHTML=CATS.map(c=>`<span><i class="dot" style="background:${c.c}"></i>${c.n}</span>`).join('');
+const legend=()=>{$('legend').innerHTML=KC().map(c=>`<span><i class="dot" style="background:${c.c}"></i>${c.n}</span>`).join('')};legend();
 
 /* ---------- state ---------- */
 let mode='rural',items=[],hidden=new Set(),shown=200,center=null,markers=new Map(),lastArea=null;
@@ -542,15 +581,15 @@ function locate(la,lo){
     if(best)return best._p}
   return{};
 }
-async function fetchOnline(f){
-  const q=`[out:json][timeout:180];(nwr["amenity"~"^(school|college|university|kindergarten|madrasa)$"]${f};nwr["school"]["name"]${f};);out center tags;`;
+async function fetchOnline(f,K=KIND){
+  const q=K==='mosque'?`[out:json][timeout:180];(nwr["amenity"="place_of_worship"]["religion"="muslim"]${f};nwr["building"="mosque"]["name"]${f};nwr["name"~"[Ee]idgah|[Ii]dgah|ঈদগাহ"]${f};);out center tags;`:`[out:json][timeout:180];(nwr["amenity"~"^(school|college|university|kindergarten|madrasa)$"]${f};nwr["school"]["name"]${f};);out center tags;`;
   const j=await overpass(q),now=Date.now();
   return j.elements.map(e=>{const t=e.tags||{};const la=e.lat??e.center?.lat,lo=e.lon??e.center?.lon;
     const name=t['name:bn']||t.name||t['name:en']||t.official_name;if(!name||la==null)return null;
-    return{id:e.type[0]+e.id,osm:e.type+'/'+e.id,name,en:(t['name:en']&&t['name:en']!==name)?t['name:en']:(t.name!==name?t.name:''),cat:classify(t),la:+la.toFixed(6),lo:+lo.toFixed(6),
+    return{id:(K==='mosque'?'m':'')+e.type[0]+e.id,kind:K,osm:e.type+'/'+e.id,name,en:(t['name:en']&&t['name:en']!==name)?t['name:en']:(t.name!==name?t.name:''),cat:K==='mosque'?classifyMosque(t):classify(t),la:+la.toFixed(6),lo:+lo.toFixed(6),
       addr:[t['addr:housenumber'],t['addr:street'],t['addr:village']||t['addr:suburb'],t['addr:city']||t['addr:district'],t['addr:postcode']].filter(Boolean).join(', '),
       eiin:t['ref:eiin']||t.eiin||t.ref||'',phone:t.phone||t['contact:phone']||'',web:t.website||t['contact:website']||'',op:t['operator:type']||t.operator||'',
-      ...locate(la,lo),src:'OpenStreetMap',at:now}}).filter(Boolean);
+      denom:t.denomination?title(t.denomination):'',...locate(la,lo),src:'OpenStreetMap',at:now}}).filter(Boolean);
 }
 async function save(list){if(EI.size)link(list);list.forEach(x=>STORE.set(x.id,x));await DB.put('inst',list);dbUI()}
 
@@ -619,6 +658,7 @@ function buildEIDX(){EIDX=new Map();for(const e of EI.values()){const k=String(e
 function link(list){
   if(!EI.size)return;if(!EIDX)buildEIDX();
   for(const x of list){
+    if(kOf(x)!=='edu')continue;
     if(x.mEiin&&EI.has(x.mEiin)){Object.assign(x,eiinFields(EI.get(x.mEiin),x));continue}
     const names=[x.en,x.name].filter(s=>/[a-z]{3}/i.test(s||''));if(!names.length)continue;
     const idx=EIDX.get(String(x.disId));if(!idx)continue;
@@ -655,7 +695,7 @@ async function eiinBoot(force){
 async function search(a,force){
   if(!a)return;lastArea=a;$('refresh').disabled=false;
   const f=a.t==='bbox'?`(${a.b.join(',')})`:`(around:${a.r},${a.la},${a.lo})`;
-  const key='area:'+f;
+  const K=KIND,key=(K==='mosque'?'marea:':'area:')+f;
   areaL.clearLayers();
   if(a.t==='bbox'){const r=L.rectangle([[a.b[0],a.b[1]],[a.b[2],a.b[3]]],{color:'#006a4e',weight:2,fillOpacity:.04,dashArray:'6 6'}).addTo(areaL);map.flyToBounds(r.getBounds());center=r.getBounds().getCenter()}
   else{const c=L.circle([a.la,a.lo],{radius:a.r,color:'#006a4e',weight:2,fillOpacity:.04,dashArray:'6 6'}).addTo(areaL);map.flyToBounds(c.getBounds());center=L.latLng(a.la,a.lo)}
@@ -663,22 +703,23 @@ async function search(a,force){
   const byId=a.near||mode!=='rural'||sel('sPo')||sel('sTown')?null:sel('sUni')?['uniId',sel('sUni')]:sel('sUpa')?['upaId',sel('sUpa')]:sel('sDis')?['disId',sel('sDis')]:null;
   const inA=x=>byId&&x[byId[0]]!=null?String(x[byId[0]])===String(byId[1]):geoIn(x);
   const show=()=>{const w=sel(mode==='city'?'sCw':'sWard');
-    const mine=getMine().filter(inA).map(x=>({...x,user:1}));
-    items=[...mine,...[...STORE.values()].filter(inA),...eiinFree().filter(inA)];
+    if(KIND!==K)return;
+    const mine=getMine().filter(x=>kOf(x)===K&&inA(x)).map(x=>({...x,user:1}));
+    items=[...mine,...[...STORE.values()].filter(x=>kOf(x)===K&&inA(x)),...(K==='edu'?eiinFree().filter(inA):[])];
     items.forEach(x=>x.star=!!(w&&String(x.ward)===String(w)));hidden.clear();shown=200;draw()};
-  const local=[...STORE.values()].some(inA);
+  const local=[...STORE.values()].some(x=>kOf(x)===K&&inA(x));
   // covered already? (area fetched in last 7 days, or its district fully saved)
-  const m=META.get(key),dId=sel('sDis'),dm=mode==='rural'&&dId&&META.get('dis:'+dId);
+  const m=META.get(key),dId=sel('sDis'),dm=mode==='rural'&&dId&&META.get(dk(dId,K));
   const fresh=(m&&Date.now()-m.t<7*864e5)||(dm&&dm.ok&&Date.now()-dm.t<30*864e5);
   if(local){show();$('srcNote').textContent='💾 সংরক্ষিত ডাটাবেস থেকে দেখানো হচ্ছে'+(fresh?' (হালনাগাদ)':'; অনলাইন থেকে নতুন তথ্য আনা হচ্ছে…')}
-  if(local&&fresh&&!force){toast(`সংরক্ষিত ডাটাবেস থেকে ${bn(items.length)}টি প্রতিষ্ঠান`);return}
-  if(!local)busy(true,'অনলাইন সার্ভার থেকে শিক্ষাপ্রতিষ্ঠান আনা হচ্ছে…');
+  if(local&&fresh&&!force){toast(`সংরক্ষিত ডাটাবেস থেকে ${bn(items.length)}টি ${T().n}`);return}
+  if(!local)busy(true,T().busy);
   try{
-    const els=await fetchOnline(f);
+    const els=await fetchOnline(f,K);
     await save(els);const mm={k:key,t:Date.now(),n:els.length};META.set(key,mm);DB.put('meta',[mm]);
     busy(false);show();
     $('srcNote').textContent=`🌐 অনলাইন থেকে আনা ও সংরক্ষিত: ${bn(els.length)}টি · ${new Date().toLocaleString('bn-BD')}`;
-    toast(`${bn(items.length)}টি প্রতিষ্ঠান পাওয়া ও সংরক্ষণ করা হয়েছে ✔`);
+    if(KIND===K)toast(`${bn(items.length)}টি ${T().n} পাওয়া ও সংরক্ষণ করা হয়েছে ✔`);
   }catch(e){busy(false);
     if(local){$('srcNote').textContent='📴 অনলাইন সার্ভারে পৌঁছানো যায়নি; সংরক্ষিত ডাটাবেস দেখানো হচ্ছে';toast('অফলাইন: সংরক্ষিত ডেটা দেখানো হচ্ছে')}
     else{show();toast('অনলাইন সার্ভার ব্যস্ত। কিছুক্ষণ পর আবার চেষ্টা করুন, অথবা আরও ছোট এলাকা বাছুন।',6000)}}
@@ -699,6 +740,7 @@ const APX={union:'ইউনিয়ন',upazila:'উপজেলা',district:'
 function info(x){return[
   x.eiin&&`<b>EIIN: ${esc(x.eiin)}</b>`+(x.mgmt?' · '+esc(MG[x.mgmt]||title(x.mgmt)):'')+(x.mpo==='YES'?' · MPO ✓':''),
   x.level&&'স্তর: '+esc(title(x.level))+(x.stype?' · '+esc(title(x.stype)):''),
+  x.denom&&'মাযহাব/ধারা: '+esc(x.denom),
   x.addr&&esc(x.addr),
   [x.uniName||x.uni,x.ward&&'ওয়ার্ড '+bn(x.ward),x.upa,x.dis].filter(Boolean).map(esc).join(' › '),
   x.phone&&`☎ <a href="tel:${esc(x.phone)}">${esc(x.phone)}</a>`,
@@ -720,7 +762,7 @@ function draw(){
   const cnt={};items.forEach(x=>cnt[x.cat]=(cnt[x.cat]||0)+1);
   const max=Math.max(1,...Object.values(cnt));
   $('total').textContent=bn(items.length);
-  $('stats').innerHTML=CATS.map(c=>`<button class="st ${hidden.has(c.k)?'off':''}" data-k="${c.k}" title="দেখান/লুকান"><i class="dot" style="background:${c.c}"></i><span><span style="display:block;font-size:13px">${c.n}</span><span class="bar"><i style="width:${(cnt[c.k]||0)/max*100}%;background:${c.c}"></i></span></span><b>${bn(cnt[c.k]||0)}</b></button>`).join('');
+  $('stats').innerHTML=KC().map(c=>`<button class="st ${hidden.has(c.k)?'off':''}" data-k="${c.k}" title="দেখান/লুকান"><i class="dot" style="background:${c.c}"></i><span><span style="display:block;font-size:13px">${c.n}</span><span class="bar"><i style="width:${(cnt[c.k]||0)/max*100}%;background:${c.c}"></i></span></span><b>${bn(cnt[c.k]||0)}</b></button>`).join('');
   const l=filtered();
   layer.clearLayers();markers.clear();
   l.forEach(x=>{const m=L.circleMarker([x.la,x.lo],{radius:x.user?9:x.approx?6:7,color:x.user?'#f5b301':x.approx?CAT[x.cat].c:'#fff',weight:x.user?3:2,fillColor:x.approx?'#fff':CAT[x.cat].c,fillOpacity:.95,dashArray:x.approx?'2 2':null}).bindPopup(popup(x));m.addTo(layer);markers.set(x.id,m)});
@@ -730,7 +772,7 @@ function draw(){
     <h3>${esc(x.name)}</h3>${x.en?`<div class="en">${esc(x.en)}</div>`:''}
     <div class="meta">${info(x).join('<br>')||'&nbsp;'}</div>
     <div class="row"><button class="btn s" data-fly="${esc(x.id)}">🗺 ম্যাপে</button><a class="btn s" href="${gm(x)}" target="_blank" rel="noopener">Google Maps</a><a class="btn s" href="${gd(x)}" target="_blank" rel="noopener">যাওয়ার পথ</a></div></article>`).join(''):'<div class="empty">এই খোঁজে কিছু মেলেনি।</div>')
-    :'<div class="empty">উপরে এলাকা বেছে “প্রতিষ্ঠান খুঁজুন” চাপুন।</div>';
+    :`<div class="empty">উপরে এলাকা বেছে “${T().go}” চাপুন।</div>`;
   $('more').hidden=l.length<=shown;$('more').textContent=`আরও দেখুন (বাকি ${bn(l.length-shown)})`;
 }
 $('stats').onclick=e=>{const b=e.target.closest('.st');if(!b)return;const k=b.dataset.k;hidden.has(k)?hidden.delete(k):hidden.add(k);draw()};
@@ -739,14 +781,15 @@ let qt;$('q').oninput=()=>{clearTimeout(qt);qt=setTimeout(()=>{shown=200;draw()}
 $('sort').onchange=draw;$('more').onclick=()=>{shown+=200;draw()};
 $('csv').onclick=()=>{const l=filtered();if(!l.length)return toast('আগে খুঁজুন');
   const rows=[['Name','English name','Type','Latitude','Longitude','Address','EIIN/Ref','Phone','Google Maps']].concat(l.map(x=>[x.name,x.en,CAT[x.cat].n,x.la,x.lo,x.addr,x.eiin,x.phone,gm(x)]));
-  dl('\ufeff'+rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n'),'eduatlas-'+Date.now()+'.csv','text/csv')};
-function dl(text,name,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+  dl('\ufeff'+rows.map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n'),(KIND==='mosque'?'mosques-':'eduatlas-')+Date.now()+'.csv','text/csv')};
+function dl(text,name,type){if(window.AndroidBridge){let p='';try{p=AndroidBridge.saveFile(name,type,text)}catch(e){}toast(p?'সংরক্ষিত: '+p:'ফাইল সংরক্ষণ করা যায়নি',5000);return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 
 /* ---------- manual add ---------- */
 const KEY='eduatlas.custom.v1';
 const getMine=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}};
 const setMine=l=>{try{localStorage.setItem(KEY,JSON.stringify(l))}catch(e){toast('ব্রাউজারে সংরক্ষণ করা যায়নি')}};
-$('aCat').innerHTML=CATS.map(c=>`<option value="${c.k}">${c.n}</option>`).join('');
+const fillCat=()=>{$('aCat').innerHTML=KC().map(c=>`<option value="${c.k}">${c.n}</option>`).join('')};fillCat();
 let picking=false,pickM=null,editId=null;
 $('pick').onclick=()=>{picking=true;$('addhint').classList.add('on');$('explore').scrollIntoView();toast('এবার ম্যাপে ক্লিক করুন')};
 map.on('click',e=>{if(!picking)return;picking=false;$('addhint').classList.remove('on');setPick(e.latlng.lat,e.latlng.lng);$('add').scrollIntoView()});
@@ -756,7 +799,7 @@ $('af').onsubmit=e=>{e.preventDefault();
   const la=+$('aLat').value,lo=+$('aLon').value;
   if(!okLL(la,lo))return toast('সঠিক অবস্থান দিন (বাংলাদেশের ভেতরে)');
   const l=getMine();
-  const rec={id:editId||'u'+Date.now(),name:$('aName').value.trim(),en:'',cat:$('aCat').value,eiin:$('aEiin').value.trim(),phone:$('aPhone').value.trim(),ward:$('aWard').value.trim()||(sel(mode==='city'?'sCw':'sWard')||''),
+  const rec={id:editId||'u'+Date.now(),kind:KIND,name:$('aName').value.trim(),en:'',cat:$('aCat').value,eiin:$('aEiin').value.trim(),phone:$('aPhone').value.trim(),ward:$('aWard').value.trim()||(sel(mode==='city'?'sCw':'sWard')||''),
     addr:[$('aAddr').value.trim(),$('crumb').textContent.replace(/^বাংলাদেশ › ?/,'')].filter(Boolean).join(', '),la,lo,
     division:opt('sDiv'),district:opt('sDis'),upazila:opt('sUpa'),union:opt('sUni'),city:opt('sCc'),at:new Date().toISOString()};
   if(!rec.name)return toast('নাম দিন');
@@ -766,7 +809,7 @@ $('af').onsubmit=e=>{e.preventDefault();
   if(lastArea)search(lastArea);else{items=[{...rec,user:1},...items];draw();map.flyTo([la,lo],16)}
 };
 function renderMine(){
-  const l=getMine();$('mineN').textContent=bn(l.length);
+  const l=getMine().filter(x=>kOf(x)===KIND);$('mineN').textContent=bn(l.length);
   $('mine').innerHTML=l.length?l.map(x=>`<div class="card" style="flex-direction:row;align-items:center;flex-wrap:wrap;gap:10px">
     <i class="dot" style="background:${CAT[x.cat]?.c||'#64748b'}"></i><div style="flex:1 1 220px"><b>${esc(x.name)}</b><div class="meta">${esc(CAT[x.cat]?.n||'')} · ${esc(x.addr)}</div></div>
     <button class="btn s" data-ed="${esc(x.id)}">✎ সম্পাদনা</button><a class="btn s" href="${gm(x)}" target="_blank" rel="noopener">Google Maps</a><button class="btn s" data-del="${esc(x.id)}" style="color:var(--r)">🗑 মুছুন</button></div>`).join(''):'<div class="empty">এখনো কিছু যোগ করা হয়নি।</div>';
@@ -775,6 +818,7 @@ $('mine').onclick=e=>{
   const d=e.target.closest('[data-del]'),ed=e.target.closest('[data-ed]');
   if(d){const x=getMine().find(y=>y.id===d.dataset.del);ask('মুছে ফেলবেন?',`“${x?.name||''}” আপনার তালিকা থেকে মুছে যাবে।`,()=>{setMine(getMine().filter(y=>y.id!==d.dataset.del));renderMine();items=items.filter(y=>y.id!==d.dataset.del);draw();toast('মুছে ফেলা হয়েছে')})}
   if(ed){const x=getMine().find(y=>y.id===ed.dataset.ed);if(!x)return;editId=x.id;
+    if(kOf(x)!==KIND)setKind(kOf(x));
     $('aName').value=x.name;$('aCat').value=x.cat;$('aEiin').value=x.eiin||'';$('aPhone').value=x.phone||'';$('aWard').value=x.ward||'';$('aAddr').value=x.addr||'';setPick(x.la,x.lo);
     $('save').textContent='✔ পরিবর্তন সংরক্ষণ';$('af').scrollIntoView();$('aName').focus()}
 };
@@ -782,38 +826,39 @@ function ask(t,b,yes){const d=$('dlg');$('dlgT').textContent=t;$('dlgB').textCon
 $('exp').onclick=()=>{const l=getMine();if(!l.length)return toast('রপ্তানির মতো কিছু নেই');dl(JSON.stringify(l,null,2),'eduatlas-my-institutions.json','application/json')};
 $('imp').onchange=async e=>{const f=e.target.files[0];if(!f)return;
   try{const arr=JSON.parse(await f.text());if(!Array.isArray(arr))throw 0;
-    const ok=arr.filter(x=>x&&typeof x.name==='string'&&okLL(+x.la,+x.lo)).map(x=>({...x,la:+x.la,lo:+x.lo,cat:CAT[x.cat]?x.cat:'other',id:String(x.id||'u'+Math.random().toString(36).slice(2))}));
+    const ok=arr.filter(x=>x&&typeof x.name==='string'&&okLL(+x.la,+x.lo)).map(x=>({...x,la:+x.la,lo:+x.lo,cat:CAT[x.cat]?x.cat:(x.kind==='mosque'?'masjid':'other'),id:String(x.id||'u'+Math.random().toString(36).slice(2))}));
     const l=getMine(),ids=new Set(l.map(x=>x.id));ok.forEach(x=>{if(!ids.has(x.id))l.push(x)});setMine(l);renderMine();toast(`${bn(ok.length)}টি প্রতিষ্ঠান Import হয়েছে`)}
   catch(err){toast('ফাইলটি সঠিক নয়')}e.target.value=''};
 
 /* ---------- nationwide bulk save ---------- */
 let running=false;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-function chips(){const done=G.dis.filter(d=>META.get('dis:'+d.id)?.ok).length;
+const dk=(id,K=KIND)=>(K==='mosque'?'mdis:':'dis:')+id;
+function chips(){const done=G.dis.filter(d=>META.get(dk(d.id))?.ok).length;
   $('dbDis').textContent=bn(done)+'/'+bn(G.dis.length||64);
-  $('dchips').innerHTML=[...G.dis].sort(byBn).map(d=>{const m=META.get('dis:'+d.id);return`<span class="dc ${m?(m.ok?'ok':'err'):''}" id="dc${esc(d.id)}" title="${m?bn(m.n||0)+'টি':''}">${esc(d.bn_name||d.name)}${m&&m.ok?' ✓':''}</span>`}).join('')}
+  $('dchips').innerHTML=[...G.dis].sort(byBn).map(d=>{const m=META.get(dk(d.id));return`<span class="dc ${m?(m.ok?'ok':'err'):''}" id="dc${esc(d.id)}" title="${m?bn(m.n||0)+'টি':''}">${esc(d.bn_name||d.name)}${m&&m.ok?' ✓':''}</span>`}).join('')}
 async function bulk(list,redo){
   if(running)return;if(!GRID.size)return toast('আগে প্রশাসনিক এলাকা লোড হতে দিন');
-  running=true;$('bStop').hidden=false;$('bAll').disabled=$('bDiv').disabled=true;
-  const todo=list.filter(d=>redo||!META.get('dis:'+d.id)?.ok);let i=0,got=0;
+  running=true;$('bStop').hidden=false;$('bAll').disabled=$('bDiv').disabled=true;$('kindEdu').disabled=$('kindMos').disabled=true;
+  const K=KIND,todo=list.filter(d=>redo||!META.get(dk(d.id,K))?.ok);let i=0,got=0;
   for(const d of todo){
     if(!running)break;i++;
     const el=$('dc'+d.id);if(el)el.className='dc run';
-    $('bStat').textContent=`${bn(i)}/${bn(todo.length)} · ${d.bn_name||d.name} জেলার তথ্য আনা হচ্ছে… (এ পর্যন্ত নতুন ${bn(got)}টি)`;
+    $('bStat').textContent=`${bn(i)}/${bn(todo.length)} · ${d.bn_name||d.name} জেলার ${T().n} আনা হচ্ছে… (এ পর্যন্ত নতুন ${bn(got)}টি)`;
     $('bBar').style.width=(i-1)/todo.length*100+'%';
     const b=bboxOf(unionsOfDistrict(d.id));let ok=false,n=0;
     for(let tr=0;tr<3&&!ok&&b;tr++){
-      try{const els=await fetchOnline(`(${b.join(',')})`);
+      try{const els=await fetchOnline(`(${b.join(',')})`,K);
         // keep only those whose nearest union is in this district (bbox overlaps neighbours)
         const mine=els.filter(x=>String(x.disId)===String(d.id));await save(mine);n=mine.length;got+=n;ok=true}
       catch(e){$('bStat').textContent=`${d.bn_name||d.name}: সার্ভার ব্যস্ত, ${bn((tr+1)*15)} সেকেন্ড পর আবার চেষ্টা…`;await sleep((tr+1)*15000)}
     }
-    const m={k:'dis:'+d.id,t:Date.now(),n,ok};META.set(m.k,m);await DB.put('meta',[m]);chips();
+    const m={k:dk(d.id,K),t:Date.now(),n,ok};META.set(m.k,m);await DB.put('meta',[m]);chips();
     await sleep(1500);
   }
   $('bBar').style.width=running?'100%':$('bBar').style.width;
-  $('bStat').textContent=running?`সম্পূর্ণ ✔ এ দফায় ${bn(got)}টি প্রতিষ্ঠান সংরক্ষিত। মোট ${bn(STORE.size)}টি।`:`থামানো হয়েছে। মোট ${bn(STORE.size)}টি সংরক্ষিত; পরে আবার চাপলে বাকি জেলা থেকে শুরু হবে।`;
-  running=false;$('bStop').hidden=true;$('bAll').disabled=$('bDiv').disabled=false;
+  $('bStat').textContent=running?`সম্পূর্ণ ✔ এ দফায় ${bn(got)}টি ${T().n} সংরক্ষিত। মোট ${bn(kindStore().length)}টি।`:`থামানো হয়েছে। মোট ${bn(kindStore().length)}টি সংরক্ষিত; পরে আবার চাপলে বাকি জেলা থেকে শুরু হবে।`;
+  running=false;$('bStop').hidden=true;$('bAll').disabled=$('bDiv').disabled=false;$('kindEdu').disabled=$('kindMos').disabled=false;
   if(lastArea)search(lastArea);
 }
 $('bAll').onclick=()=>bulk(G.dis);
@@ -821,22 +866,23 @@ $('eiinRe').onclick=()=>eiinBoot(true);
 $('bDiv').onclick=()=>{const v=sel('sDiv');if(!v)return toast('উপরে একটি বিভাগ বাছুন');bulk(G.dis.filter(d=>d.division_id==v))};
 $('bStop').onclick=()=>{running=false;$('bStat').textContent='থামানো হচ্ছে… (চলতি জেলাটি শেষ হলে থামবে)'};
 $('dbRedo').onclick=()=>ask('সব জেলা আবার হালনাগাদ?','অনলাইন সার্ভার থেকে সব জেলার তথ্য নতুন করে আনা হবে (২০–৪০ মিনিট)। আগের তথ্য মুছবে না, হালনাগাদ হবে।',()=>bulk(G.dis,true));
+const kindStore=(K=KIND)=>[...STORE.values()].filter(x=>kOf(x)===K);
 function dbUI(){
-  const all=[...STORE.values(),...eiinFree()],cnt={};
-  const withE=all.filter(x=>x.eiin).length;$('kEiin').textContent=bn(withE);
+  const eduAll=[...kindStore('edu'),...eiinFree()],mosAll=kindStore('mosque'),all=KIND==='mosque'?mosAll:eduAll,cnt={};
+  $('kEiin').textContent=bn(eduAll.filter(x=>x.eiin).length);$('kMosq').textContent=bn(mosAll.length);
   $('eiinStat').textContent=EI.size?`EIIN ডাটাবেস (BANBEIS): ${bn(EI.size)}টি · এর মধ্যে ${bn(LINK.size)}টি ম্যাপের সঠিক অবস্থানের সাথে মিলেছে, বাকিগুলো ইউনিয়ন/উপজেলা কেন্দ্রে আনুমানিক অবস্থানে।`:$('eiinStat').textContent;all.forEach(x=>cnt[x.cat]=(cnt[x.cat]||0)+1);const max=Math.max(1,...Object.values(cnt));
-  $('kSaved').textContent=bn(all.length);$('dbTotal').textContent=bn(all.length);$('dbMine').textContent=bn(getMine().length);
-  $('dbStats').innerHTML=CATS.map(c=>`<div class="st" style="cursor:default"><i class="dot" style="background:${c.c}"></i><span><span style="display:block;font-size:13px">${c.n}</span><span class="bar"><i style="width:${(cnt[c.k]||0)/max*100}%;background:${c.c}"></i></span></span><b>${bn(cnt[c.k]||0)}</b></div>`).join('');
+  $('kSaved').textContent=bn(eduAll.length);$('dbTotal').textContent=bn(all.length);$('dbMine').textContent=bn(getMine().filter(x=>kOf(x)===KIND).length);
+  $('dbStats').innerHTML=KC().map(c=>`<div class="st" style="cursor:default"><i class="dot" style="background:${c.c}"></i><span><span style="display:block;font-size:13px">${c.n}</span><span class="bar"><i style="width:${(cnt[c.k]||0)/max*100}%;background:${c.c}"></i></span></span><b>${bn(cnt[c.k]||0)}</b></div>`).join('');
   const last=Math.max(0,...all.map(x=>x.at||0));
   $('dbWhen').textContent=DB.db?(last?'সর্বশেষ সংরক্ষণ: '+new Date(last).toLocaleString('bn-BD'):'এখনো কিছু সংরক্ষিত হয়নি।'):'⚠ এই ব্রাউজারে স্থায়ী সংরক্ষণ বন্ধ (প্রাইভেট মোড?)। শুধু এই সেশনে থাকবে; Export করে রাখুন।';
   chips();
 }
-const fullRows=()=>[...getMine().map(x=>({...x,src:'নিজে যোগ করা'})),...STORE.values(),...eiinFree()];
+const fullRows=()=>[...getMine().filter(x=>kOf(x)===KIND).map(x=>({...x,src:'নিজে যোগ করা'})),...kindStore(),...(KIND==='edu'?eiinFree():[])];
 $('dbJson').onclick=()=>{const l=[...STORE.values()];if(!l.length&&!getMine().length&&!EI.size)return toast('ডাটাবেস খালি');
   dl(JSON.stringify({app:'EduAtlas Bangladesh',version:1,exportedAt:new Date().toISOString(),institutions:l,eiin:[...EI.values()].map(({_n,...e})=>e),mine:getMine()}),'eduatlas-database-'+new Date().toISOString().slice(0,10)+'.json','application/json')};
 $('dbCsv').onclick=()=>{const l=fullRows();if(!l.length)return toast('ডাটাবেস খালি');
   const h=['EIIN','Name','English name','Type','Management','Education level','MPO','Division','District','Upazila/Thana','Union','Ward','Latitude','Longitude','Location','Address','Mobile','Website','Source','Google Maps'];
-  dl('\ufeff'+[h,...l.map(x=>[x.eiin,x.name,x.en,CAT[x.cat]?.n,MG[x.mgmt]||x.mgmt,x.level,x.mpo,x.div||x.division,x.dis||x.district,x.upa||x.upazila,x.uniName||x.uni||x.union,x.ward,x.la,x.lo,x.approx?'আনুমানিক ('+APX[x.approx]+')':'সঠিক',x.addr,x.phone,x.web,x.src,gm(x)])].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n'),'eduatlas-database.csv','text/csv')};
+  dl('\ufeff'+[h,...l.map(x=>[x.eiin,x.name,x.en,CAT[x.cat]?.n,MG[x.mgmt]||x.mgmt,x.level,x.mpo,x.div||x.division,x.dis||x.district,x.upa||x.upazila,x.uniName||x.uni||x.union,x.ward,x.la,x.lo,x.approx?'আনুমানিক ('+APX[x.approx]+')':'সঠিক',x.addr,x.phone,x.web,x.src,gm(x)])].map(r=>r.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')).join('\n'),(KIND==='mosque'?'mosque-database.csv':'eduatlas-database.csv'),'text/csv')};
 $('dbImp').onchange=async e=>{const f=e.target.files[0];if(!f)return;busy(true,'Import হচ্ছে…');
   try{const j=JSON.parse(await f.text());const ins=(Array.isArray(j)?[]:j.institutions||[]).filter(x=>x&&x.id&&typeof x.name==='string'&&okLL(+x.la,+x.lo)).map(x=>({...x,la:+x.la,lo:+x.lo,cat:CAT[x.cat]?x.cat:'other'}));
     await save(ins);const eins=Array.isArray(j)?[]:(j.eiin||[]).filter(e=>e&&e.eiin&&okLL(+e.la,+e.lo));
@@ -845,8 +891,39 @@ $('dbImp').onchange=async e=>{const f=e.target.files[0];if(!f)return;busy(true,'
     if(mine.length){const l=getMine(),ids=new Set(l.map(x=>x.id));mine.filter(x=>x&&x.name&&okLL(+x.la,+x.lo)&&!ids.has(x.id)).forEach(x=>l.push({...x,la:+x.la,lo:+x.lo}));setMine(l);renderMine()}
     busy(false);dbUI();toast(`${bn(ins.length+mine.length+eins.length)}টি রেকর্ড Import হয়েছে ✔`)}
   catch(err){busy(false);toast('ফাইলটি সঠিক নয়')}e.target.value=''};
-$('dbClear').onclick=()=>ask('পুরো ডাটাবেস মুছবেন?',`অনলাইন থেকে সংরক্ষিত ${bn(STORE.size)}টি প্রতিষ্ঠান এই ডিভাইস থেকে মুছে যাবে (নিজে যোগ করাগুলো থাকবে)। আগে Export করে রাখতে পারেন।`,async()=>{
+$('dbClear').onclick=()=>ask('পুরো ডাটাবেস মুছবেন?',`অনলাইন থেকে সংরক্ষিত ${bn(STORE.size)}টি শিক্ষাপ্রতিষ্ঠান ও মসজিদ এই ডিভাইস থেকে মুছে যাবে (নিজে যোগ করাগুলো থাকবে)। আগে Export করে রাখতে পারেন।`,async()=>{
   await DB.clear('inst');STORE.clear();for(const k of [...META.keys()]){await DB.del('meta',k)}META.clear();dbUI();toast('ডাটাবেস মুছে ফেলা হয়েছে')});
+
+function setKind(k){
+  if(running&&k!==KIND)return toast('আগে চলমান সংরক্ষণ শেষ হতে দিন বা থামান');
+  KIND=k;document.body.dataset.kind=k;
+  $('kindEdu').setAttribute('aria-pressed',k==='edu');$('kindMos').setAttribute('aria-pressed',k==='mosque');
+  const x=T();$('tExplore').textContent=x.ex;$('tGo').textContent=x.go;$('tDb').textContent=x.db;$('tAdd').textContent=x.add;$('tName').textContent=x.name;$('tMine').textContent=x.n;$('tDbN').textContent=x.n;
+  $('aName').placeholder=x.ph;$('q').placeholder=x.q;document.title=x.title;
+  $('eiinWrap').hidden=k!=='edu';document.querySelectorAll('[data-edu]').forEach(e=>e.hidden=k!=='edu');
+  try{history.replaceState(null,'',k==='mosque'?'#mosque':location.pathname+location.search)}catch(e){}
+  hidden.clear();items=[];legend();fillCat();renderMine();dbUI();draw();
+  $('bStat').textContent='প্রস্তুত।';$('bBar').style.width='0';$('srcNote').textContent='';
+  if(lastArea)search(lastArea);
+}
+$('kindEdu').onclick=()=>setKind('edu');$('kindMos').onclick=()=>setKind('mosque');
+window.addEventListener('hashchange',()=>{const k=location.hash==='#mosque'?'mosque':'edu';if(k!==KIND)setKind(k)});
+setKind(KIND);
+
+/* ---------- install as app (PWA) / Android app ---------- */
+let deferred=null;
+if(window.AndroidBridge)$('getapp').hidden=true;
+else{
+  if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e});
+  const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+  if(standalone)$('pwaBtn').hidden=true;
+  $('pwaBtn').onclick=async()=>{
+    if(deferred){deferred.prompt();const r=await deferred.userChoice;deferred=null;if(r.outcome==='accepted')toast('ইনস্টল হচ্ছে ✔')}
+    else if(/iphone|ipad|ipod/i.test(navigator.userAgent))ask('iPhone-এ ইনস্টল','Safari-তে নিচের Share (⬆) বোতাম চাপুন → “Add to Home Screen” → Add।',()=>{});
+    else ask('ফোনে ইনস্টল','Chrome-এর ⋮ মেনু → “Install app” বা “Add to Home screen” চাপুন। Android-এ চাইলে APK ডাউনলোড করেও ইনস্টল করা যায়।',()=>{});
+  };
+}
 
 boot();
 }

@@ -1,0 +1,36 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'bd.tisacademy.eduatlas'
+    compileSdk 34
+    defaultConfig {
+        applicationId "bd.tisacademy.eduatlas"
+        minSdk 24
+        targetSdk 34
+        versionCode (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInteger()
+        versionName "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
+    }
+    signingConfigs {
+        release {
+            // public build key, kept in the repo so every new APK installs over the old one
+            storeFile file("../eduatlas-release.jks")
+            storePassword "eduatlas2026"
+            keyAlias "eduatlas"
+            keyPassword "eduatlas2026"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.11.0'
+}

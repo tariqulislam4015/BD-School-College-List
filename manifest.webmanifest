@@ -1,0 +1,21 @@
+{
+  "name": "শিক্ষা অ্যাটলাস বাংলাদেশ",
+  "short_name": "শিক্ষা অ্যাটলাস",
+  "description": "বাংলাদেশের শিক্ষাপ্রতিষ্ঠান ও মসজিদ, এক মানচিত্রে: EIIN, এলাকা, Google Maps লোকেশন",
+  "lang": "bn",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f8f5",
+  "theme_color": "#006a4e",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "মসজিদ", "url": "./#mosque", "icons": [{"src": "icons/icon-192.png", "sizes": "192x192"}]}
+  ]
+}
