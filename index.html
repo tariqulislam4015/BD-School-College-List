@@ -157,12 +157,29 @@ footer a{color:#fff}
 .prog{height:14px;background:var(--g2);border-radius:9px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#006a4e,#16a34a);transition:width .4s}
 .dchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;max-height:190px;overflow:auto}
 .dc{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--g2);color:var(--mute)}.dc.ok{background:#006a4e;color:#fff}.dc.run{background:var(--gold);color:#3b2a00}.dc.err{background:var(--r);color:#fff}
-.kinds{display:flex;gap:4px;background:var(--g2);border-radius:999px;padding:4px}
+.kinds{display:flex;gap:4px;overflow-x:auto;max-width:100%;scrollbar-width:none;background:var(--g2);border-radius:999px;padding:4px}
 .kinds button{border:0;background:none;padding:7px 14px;border-radius:999px;font-weight:700;cursor:pointer;min-height:40px;white-space:nowrap;transition:background .25s,color .25s}
 .kinds button[aria-pressed=true]{background:var(--g);color:#fff;box-shadow:0 4px 12px -4px rgba(0,80,50,.5)}
 body[data-kind=mosque] .hero{background:linear-gradient(135deg,#0f4c3a 0%,#0b3a2c 60%,#072a20 100%)}
 body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
 .kmark{display:inline-block;animation:rise .5s both}
+.ac{position:relative}
+.sug{position:absolute;z-index:800;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);max-height:280px;overflow:auto;display:none}
+.sug.on{display:block}.sug button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px 12px;cursor:pointer;font-size:14px;border-bottom:1px solid var(--line);min-height:44px}
+.sug button:hover,.sug button:focus{background:var(--g2)}.sug b{color:var(--g)}
+.fsum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:12px}
+.fsum div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.fsum b{display:block;font:800 clamp(22px,3vw,28px)/1.1 "Baloo Da 2",sans-serif;color:var(--g)}.fsum span{font-size:13px;color:var(--mute)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:18px}
+.fc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;animation:rise .45s both;transition:transform .2s,box-shadow .2s}
+.fc:hover{transform:translateY(-3px);box-shadow:var(--sh)}.fc .ico{font-size:30px;line-height:1}
+.fc .amt{font:800 clamp(26px,3vw,32px)/1.1 "Baloo Da 2",sans-serif;color:var(--g)}.fc.na{opacity:.55}
+.sw{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin-top:12px;cursor:pointer}.sw input{width:20px;height:20px;min-height:0;margin-top:2px;accent-color:var(--g)}
+#fmap{position:absolute;inset:0}
+.rt{border:1px solid var(--line);border-radius:12px;margin:0 0 10px;padding:8px 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 10px}
+.rt legend{font-weight:700;padding:0 6px}.rt small{color:var(--mute);font-weight:400}.rt label{font-size:13px;color:var(--mute)}.rt input{min-height:36px;padding:4px 8px;font-size:15px;margin-top:2px}
+body[data-kind=fare] .hero{background:linear-gradient(135deg,#0b4f6c 0%,#0a3d52 60%,#072b3a 100%)}
+body[data-kind=fare] .hero:before{background:#f5b301}
 @media(max-width:980px){.app{grid-template-columns:minmax(0,1fr)}.rail{position:static;max-height:none}.hero .wrap{grid-template-columns:minmax(0,1fr)}.prof{max-width:440px;width:100%;margin:0 auto}}
 @media(max-width:600px){.form{grid-template-columns:minmax(0,1fr)}.nav{display:none}.kinds{margin-left:auto}.kinds button{padding:7px 10px;font-size:14px}.legend{max-width:75%;font-size:12px}}
 </style>
@@ -180,14 +197,14 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
     </svg>
     <span><b>শিক্ষা অ্যাটলাস</b><small>EduAtlas Bangladesh</small></span>
   </a>
-  <div class="kinds" role="group" aria-label="বিভাগ বাছুন"><button id="kindEdu" aria-pressed="true">🎓 শিক্ষাপ্রতিষ্ঠান</button><button id="kindMos" aria-pressed="false">🕌 মসজিদ</button></div>
-  <nav class="nav"><a href="#explore">মানচিত্র</a><a href="#list">তালিকা</a><a href="#db">ডাটাবেস</a><a href="#add">নতুন যোগ</a><a href="#creator">নির্মাতা</a></nav>
+  <div class="kinds" role="group" aria-label="বিভাগ বাছুন"><button id="kindEdu" aria-pressed="true">🎓 শিক্ষাপ্রতিষ্ঠান</button><button id="kindMos" aria-pressed="false">🕌 মসজিদ</button><button id="kindFare" aria-pressed="false">🚌 ভাড়া</button></div>
+  <nav class="nav"><a href="#fare" data-part="fare" hidden>ভাড়া হিসাব</a><a href="#explore" data-part="places">মানচিত্র</a><a href="#list" data-part="places">তালিকা</a><a href="#db" data-part="places">ডাটাবেস</a><a href="#add" data-part="places">নতুন যোগ</a><a href="#creator">নির্মাতা</a></nav>
 </div></header>
 
 <section class="hero" id="top"><div class="wrap">
   <div>
-    <h1>বাংলাদেশের শিক্ষাপ্রতিষ্ঠান ও মসজিদ, এক মানচিত্রে</h1>
-    <p>বিভাগ → জেলা → উপজেলা → ইউনিয়ন → ওয়ার্ড, সিটি কর্পোরেশন, শহর ও ডাকঘর ধরে খুঁজুন: মসজিদ, ঈদগাহ, শিশু নিকেতন, ক্যাডেট, প্রাথমিক, উচ্চ বিদ্যালয়, কলেজ, মাদরাসা ও বিশ্ববিদ্যালয়। সরকারি BANBEIS তালিকা থেকে EIIN, মোবাইল, ব্যবস্থাপনা ও স্তরসহ সব তথ্য অনলাইন থেকে এনে নিজে থেকেই সংরক্ষণ হয়; যা নেই তা আপনি নিজেই যোগ করতে পারবেন।</p>
+    <h1>শিক্ষাপ্রতিষ্ঠান, মসজিদ ও যাতায়াত ভাড়া: এক মানচিত্রে</h1>
+    <p>বিভাগ → জেলা → উপজেলা → ইউনিয়ন → ওয়ার্ড, সিটি কর্পোরেশন, শহর ও ডাকঘর ধরে খুঁজুন। “🚌 ভাড়া” অংশে যেকোনো দুই জায়গার মধ্যে রিকশা, সিএনজি, বাস, ট্রেন, মোটরবাইকের বর্তমান ভাড়া দেখুন। বাকি দুই অংশে আছে মসজিদ, ঈদগাহ, শিশু নিকেতন, ক্যাডেট, প্রাথমিক, উচ্চ বিদ্যালয়, কলেজ, মাদরাসা ও বিশ্ববিদ্যালয়। সরকারি BANBEIS তালিকা থেকে EIIN, মোবাইল, ব্যবস্থাপনা ও স্তরসহ সব তথ্য অনলাইন থেকে এনে নিজে থেকেই সংরক্ষণ হয়; যা নেই তা আপনি নিজেই যোগ করতে পারবেন।</p>
     <div class="kpis">
       <div class="kpi"><b id="kDiv">–</b><span>বিভাগ</span></div>
       <div class="kpi"><b id="kDis">–</b><span>জেলা</span></div>
@@ -226,7 +243,36 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
 </div></section>
 
 <main>
-<section class="band" id="explore"><div class="wrap">
+<section class="band" id="fare" data-part="fare" hidden><div class="wrap">
+  <h2>যাতায়াত ভাড়া হিসাব</h2>
+  <p class="sub">কোথা থেকে কোথায় যাবেন দিন। রাস্তা ধরে দূরত্ব মেপে বাংলাদেশের বর্তমান হারে প্রতিটি বাহনের ভাড়া দেখাবে, সাথে ম্যাপে পুরো রাস্তা।</p>
+  <div class="app">
+    <div class="panel rail">
+      <label class="f" for="fFrom">কোথা থেকে</label>
+      <div class="ac"><input id="fFrom" placeholder="যেমন: মিরপুর ১০ বা পোস্টকোড" autocomplete="off"><div class="sug" id="sFrom"></div></div>
+      <div class="row" style="margin-top:6px"><button class="btn s" id="fFromMe">📍 আমার অবস্থান</button><button class="btn s" id="fFromMap">🗺 ম্যাপে বাছুন</button></div>
+      <label class="f" for="fTo">কোথায়</label>
+      <div class="ac"><input id="fTo" placeholder="যেমন: মতিঝিল বা কুমিল্লা" autocomplete="off"><div class="sug" id="sTo"></div></div>
+      <div class="row" style="margin-top:6px"><button class="btn s" id="fSwap">⇅ উল্টান</button><button class="btn s" id="fToMap">🗺 ম্যাপে বাছুন</button></div>
+      <div class="row" style="margin-top:4px"><div><label class="f" for="fPax">যাত্রী</label><input id="fPax" type="number" min="1" max="30" value="1"></div>
+      <div><label class="f" for="fTime">সময়</label><select id="fTime"><option value="auto">এখন</option><option value="day">দিন</option><option value="peak">অফিস টাইম</option><option value="night">রাত</option></select></div></div>
+      <div class="row" style="margin-top:12px"><button class="btn p" id="fGo" disabled>🧮 ভাড়া হিসাব করুন</button></div>
+      <div class="crumb" id="fRateInfo">ভাড়ার হার লোড হচ্ছে…</div>
+      <label class="sw"><input type="checkbox" id="fAuto" checked><span><b>অটো আপডেট</b>: সরকার বা বাজারে ভাড়া বদলালে অনলাইন থেকে নতুন হার নিজে থেকেই বসবে</span></label>
+      <div class="row" style="margin-top:8px"><button class="btn s" id="fCheck">⟳ এখনই হালনাগাদ</button><button class="btn s" id="fEdit">✎ হার দেখুন / বদলান</button></div>
+    </div>
+    <div>
+      <div class="mapbox" style="height:clamp(360px,58vh,600px)"><div id="fmap" role="application" aria-label="ভাড়া ম্যাপ"></div><div class="addhint" id="fhint"></div><div class="busy" id="fbusy"><div><div class="spin"></div><span>রাস্তা খোঁজা হচ্ছে…</span></div></div></div>
+      <div class="fsum" id="fSum"></div>
+      <div class="row" id="gmRow" hidden style="margin-top:10px"><a class="btn" id="gmLink" target="_blank" rel="noopener">🗺 Google Maps-এ রাস্তা ও দিকনির্দেশনা</a><button class="btn" id="gmEmbedBtn">👁 এখানেই Google ম্যাপে রাস্তা দেখুন</button></div>
+      <div id="gmEmbed" hidden class="mapbox" style="height:clamp(360px,55vh,560px);margin-top:10px"></div>
+    </div>
+  </div>
+  <div class="fgrid" id="fCards"><div class="empty" style="grid-column:1/-1">শুরু ও গন্তব্য দিন: নাম লিখে বাছুন, ম্যাপে চাপুন বা “আমার অবস্থান” নিন।</div></div>
+  <p class="note" id="fNote"></p>
+</div></section>
+
+<section class="band" id="explore" data-part="places"><div class="wrap">
   <h2 id="tExplore">এলাকা বেছে নিন, প্রতিষ্ঠান দেখুন</h2>
   <p class="sub">জেলা বা সিটি কর্পোরেশন বাছলেই খোঁজা যাবে। যত ছোট এলাকা বাছবেন (উপজেলা, ইউনিয়ন, ডাকঘর, শহর), ফলাফল তত নির্দিষ্ট ও দ্রুত হবে।</p>
   <div class="app">
@@ -274,7 +320,7 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
   </div>
 </div></section>
 
-<section class="band" id="list" style="padding-top:0"><div class="wrap">
+<section class="band" id="list" data-part="places" style="padding-top:0"><div class="wrap">
   <div class="lhead">
     <input id="q" type="search" placeholder="নাম বা EIIN দিয়ে খুঁজুন…" aria-label="নাম দিয়ে খুঁজুন">
     <select id="sort" aria-label="সাজান"><option value="name">নাম অনুযায়ী</option><option value="cat">ধরন অনুযায়ী</option><option value="dist">কেন্দ্র থেকে দূরত্ব</option></select>
@@ -284,7 +330,7 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
   <div style="text-align:center;margin-top:14px"><button class="btn" id="more" hidden>আরও দেখুন</button></div>
 </div></section>
 
-<section class="band" id="db"><div class="wrap">
+<section class="band" id="db" data-part="places"><div class="wrap">
   <h2 id="tDb">সংরক্ষিত ডাটাবেস</h2>
   <p class="sub">অনলাইনে যা পাওয়া যায়, সব নিজে থেকেই এই ডিভাইসে স্থায়ীভাবে জমা হয়। পরে ইন্টারনেট ছাড়াও দেখা যাবে। পুরো দেশের ডেটা একবারে জমা করতে নিচের বোতাম চাপুন (৬৪ জেলা, প্রায় ২০–৪০ মিনিট; মাঝপথে থামালে পরে যেখান থেকে থেমেছিল সেখান থেকে চলবে)।</p>
   <div class="app" style="grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)">
@@ -319,7 +365,7 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
   </div>
 </div></section>
 
-<section class="band" id="add" style="background:var(--card);border-top:1px solid var(--line)"><div class="wrap">
+<section class="band" id="add" data-part="places" style="background:var(--card);border-top:1px solid var(--line)"><div class="wrap">
   <h2 id="tAdd">নতুন প্রতিষ্ঠান যোগ করুন</h2>
   <p class="sub">তালিকায় না থাকলে এখানে যোগ করুন। উপরে বাছাই করা এলাকা নিজে থেকেই বসে যাবে। “ম্যাপে অবস্থান বাছুন” চেপে ম্যাপে ক্লিক করুন।</p>
   <form id="af" class="form" autocomplete="off">
@@ -353,6 +399,7 @@ body[data-kind=mosque] .hero:before{background:#f5b301;opacity:.85}
   <div>তথ্যসূত্র: <a href="https://github.com/nuhil/bangladesh-geocode" target="_blank" rel="noopener">bangladesh-geocode</a> (প্রশাসনিক এলাকা ও পোস্টকোড) · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> / Overpass API (প্রতিষ্ঠান)</div>
 </div></footer>
 
+<dialog id="rdlg" style="max-width:min(860px,96vw)"><h3 style="margin-top:0">ভাড়ার হার</h3><p class="note" style="margin-top:0">এখানে বদলালে আপনার নিজের হার ব্যবহার হবে, আর অটো আপডেট বন্ধ হবে। “অনলাইনের হারে ফেরান” চাপলে আবার চালু হবে।</p><div id="rBody"></div><div class="row" style="margin-top:12px"><button class="btn" id="rClose">বন্ধ</button><button class="btn" id="rReset">↺ অনলাইনের হারে ফেরান</button><button class="btn p" id="rSave">✔ সংরক্ষণ</button></div></dialog>
 <dialog id="dlg"><h3 id="dlgT" style="margin-top:0"></h3><div id="dlgB"></div><div class="row" style="margin-top:16px"><button class="btn" id="dlgNo">বাতিল</button><button class="btn r" id="dlgYes">হ্যাঁ</button></div></dialog>
 <div class="toast" id="toast" role="status"></div>
 
@@ -382,7 +429,8 @@ const CATS=[
  {k:'markaz',n:'মারকাজ / কেন্দ্রীয় মসজিদ',c:'#7c3aed',kind:'mosque'},
  {k:'masjid',n:'মসজিদ (ধরন অনির্ধারিত)',c:'#475569',kind:'mosque'}];
 /* ---- partitions: edu (শিক্ষাপ্রতিষ্ঠান) and mosque (মসজিদ) ---- */
-let KIND=(()=>{try{return location.hash==='#mosque'?'mosque':'edu'}catch(e){return'edu'}})();
+const hashKind=()=>{try{return location.hash==='#mosque'?'mosque':location.hash==='#fare'?'fare':'edu'}catch(e){return'edu'}};
+let KIND=hashKind();
 const kOf=x=>x.kind||'edu';
 const KC=()=>CATS.filter(c=>(c.kind||'edu')===KIND);
 const TX={edu:{n:'প্রতিষ্ঠান',ex:'এলাকা বেছে নিন, প্রতিষ্ঠান দেখুন',go:'প্রতিষ্ঠান খুঁজুন',db:'সংরক্ষিত ডাটাবেস: শিক্ষাপ্রতিষ্ঠান',add:'নতুন প্রতিষ্ঠান যোগ করুন',name:'প্রতিষ্ঠানের নাম *',ph:'যেমন: চর আলগী সরকারি প্রাথমিক বিদ্যালয়',q:'নাম বা EIIN দিয়ে খুঁজুন…',busy:'অনলাইন সার্ভার থেকে শিক্ষাপ্রতিষ্ঠান আনা হচ্ছে…',title:'শিক্ষা অ্যাটলাস বাংলাদেশ'},
@@ -839,7 +887,7 @@ function chips(){const done=G.dis.filter(d=>META.get(dk(d.id))?.ok).length;
   $('dchips').innerHTML=[...G.dis].sort(byBn).map(d=>{const m=META.get(dk(d.id));return`<span class="dc ${m?(m.ok?'ok':'err'):''}" id="dc${esc(d.id)}" title="${m?bn(m.n||0)+'টি':''}">${esc(d.bn_name||d.name)}${m&&m.ok?' ✓':''}</span>`}).join('')}
 async function bulk(list,redo){
   if(running)return;if(!GRID.size)return toast('আগে প্রশাসনিক এলাকা লোড হতে দিন');
-  running=true;$('bStop').hidden=false;$('bAll').disabled=$('bDiv').disabled=true;$('kindEdu').disabled=$('kindMos').disabled=true;
+  running=true;$('bStop').hidden=false;$('bAll').disabled=$('bDiv').disabled=true;$('kindEdu').disabled=$('kindMos').disabled=$('kindFare').disabled=true;
   const K=KIND,todo=list.filter(d=>redo||!META.get(dk(d.id,K))?.ok);let i=0,got=0;
   for(const d of todo){
     if(!running)break;i++;
@@ -858,7 +906,7 @@ async function bulk(list,redo){
   }
   $('bBar').style.width=running?'100%':$('bBar').style.width;
   $('bStat').textContent=running?`সম্পূর্ণ ✔ এ দফায় ${bn(got)}টি ${T().n} সংরক্ষিত। মোট ${bn(kindStore().length)}টি।`:`থামানো হয়েছে। মোট ${bn(kindStore().length)}টি সংরক্ষিত; পরে আবার চাপলে বাকি জেলা থেকে শুরু হবে।`;
-  running=false;$('bStop').hidden=true;$('bAll').disabled=$('bDiv').disabled=false;$('kindEdu').disabled=$('kindMos').disabled=false;
+  running=false;$('bStop').hidden=true;$('bAll').disabled=$('bDiv').disabled=false;$('kindEdu').disabled=$('kindMos').disabled=$('kindFare').disabled=false;
   if(lastArea)search(lastArea);
 }
 $('bAll').onclick=()=>bulk(G.dis);
@@ -894,20 +942,206 @@ $('dbImp').onchange=async e=>{const f=e.target.files[0];if(!f)return;busy(true,'
 $('dbClear').onclick=()=>ask('পুরো ডাটাবেস মুছবেন?',`অনলাইন থেকে সংরক্ষিত ${bn(STORE.size)}টি শিক্ষাপ্রতিষ্ঠান ও মসজিদ এই ডিভাইস থেকে মুছে যাবে (নিজে যোগ করাগুলো থাকবে)। আগে Export করে রাখতে পারেন।`,async()=>{
   await DB.clear('inst');STORE.clear();for(const k of [...META.keys()]){await DB.del('meta',k)}META.clear();dbUI();toast('ডাটাবেস মুছে ফেলা হয়েছে')});
 
+/* ================= ভাড়া (fare) partition ================= */
+const FARE_URLS=['https://tariqulislam4015.github.io/BD-School-College-List/fares.json','https://raw.githubusercontent.com/tariqulislam4015/BD-School-College-List/main/fares.json','fares.json'];
+const DEFAULT_RATES={"version": "2026-11-25", "label": "২৫ নভেম্বর ২০২৬", "note": "সরকারি হার: বাস (প্রজ্ঞাপন ২৩ সেপ্টেম্বর ২০২৬), সিএনজি মিটার (বিআরটিএ), ট্রেন (রেলের ভিত্তি হার)। রিকশা, ইজিবাইক, মোটরবাইক ও কারের সরকারি হার নেই, তাই বাজারদর অনুমান।", "nightX": 1.2, "peakX": 1.15, "v": {"rickshaw": {"n": "রিকশা", "i": "🚲", "m": "ride", "base": 20, "perKm": 20, "perMin": 0, "min": 30, "spread": 0.2, "maxKm": 8, "speed": 10, "per": "vehicle", "cap": 2, "off": false}, "easybike": {"n": "অটোরিকশা / ইজিবাইক (শেয়ার)", "i": "🔋", "m": "ride", "base": 5, "perKm": 3.5, "perMin": 0, "min": 10, "spread": 0.2, "maxKm": 30, "speed": 18, "per": "person", "off": false}, "cng": {"n": "সিএনজি অটোরিকশা", "i": "🛺", "m": "meter", "base": 40, "firstKm": 2, "perKm": 12, "wait": 2, "min": 40, "mkLo": 1.4, "mkHi": 1.9, "maxKm": 120, "per": "vehicle", "cap": 3, "off": true}, "bus": {"n": "বাস (নন-এসি)", "i": "🚌", "m": "bus", "city": 2.7, "cityMin": 10, "dtca": 2.6, "dtcaMin": 8, "long": 2.4, "longMin": 10, "per": "person", "off": true}, "acbus": {"n": "এসি বাস (দূরপাল্লা)", "i": "🚍", "m": "ride", "base": 0, "perKm": 4.2, "perMin": 0, "min": 300, "spread": 0.15, "minKm": 60, "per": "person", "off": false}, "train": {"n": "ট্রেন", "i": "🚆", "m": "train", "shovon": 1.2, "snigdha": 2.25, "railX": 1.08, "min": 50, "minKm": 25, "per": "person", "off": true}, "bike": {"n": "মোটরবাইক (রাইড শেয়ার)", "i": "🏍️", "m": "ride", "base": 40, "perKm": 18, "perMin": 1, "min": 60, "spread": 0.15, "maxKm": 80, "tx": 0.75, "per": "vehicle", "cap": 1, "surge": true, "off": false}, "car": {"n": "প্রাইভেট কার (রাইড শেয়ার)", "i": "🚗", "m": "ride", "base": 60, "perKm": 26, "perMin": 3, "min": 200, "spread": 0.15, "per": "vehicle", "cap": 4, "surge": true, "off": false}}, "sources": [{"t": "বাস ভাড়া: প্রজ্ঞাপন ২৩ সেপ্টেম্বর ২০২৬ (Dhaka Tribune)", "u": "https://www.dhakatribune.com/bangladesh/420498/govt-issues-gazette-raising-bus-minibus-fares-by"}, {"t": "সিএনজি মিটার হার (TBS News)", "u": "https://www.tbsnews.net/node/1066706"}, {"t": "ট্রেনের ভিত্তি হার (প্রথম আলো)", "u": "https://en.prothomalo.com/bangladesh/yjr0esjz38"}]};
+const FK={rates:'fare.rates.v1',custom:'fare.custom.v1',auto:'fare.auto.v1'};
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let RATES=lsGet(FK.rates,null)||DEFAULT_RATES;
+if(DEFAULT_RATES.version>RATES.version)RATES=DEFAULT_RATES;
+let fAuto=lsGet(FK.auto,true);
+const RT=()=>(!fAuto&&lsGet(FK.custom,null))||RATES;
+const tk=n=>'৳'+bn(Math.round(n).toLocaleString('en-IN'));
+const m2=n=>'৳'+bn(String(+(+n).toFixed(2)));
+const r5=n=>Math.max(5,Math.round(n/5)*5);
+function rateInfo(){
+  const own=!fAuto&&lsGet(FK.custom,null);
+  $('fRateInfo').textContent=own?`✎ আপনার নিজের হার ব্যবহার হচ্ছে (অটো আপডেট বন্ধ)`:`✔ ভাড়ার হার: ${RATES.label||RATES.version}${fAuto?' · অটো আপডেট চালু':''}`;
+  $('fAuto').checked=fAuto;
+}
+async function fareUpdate(manual){
+  let best=null;
+  for(const u of FARE_URLS){
+    try{const r=await fetch(u+(u.startsWith('http')?'?t='+Date.now():''),{cache:'no-store'});if(!r.ok)continue;const j=await r.json();
+      if(j&&j.v&&j.version&&(!best||j.version>best.version))best=j}catch(e){}
+  }
+  if(!best){if(manual)toast('অনলাইনে পৌঁছানো যায়নি; আগের হার ব্যবহার হচ্ছে');return}
+  if(best.version>RATES.version){
+    RATES=best;lsSet(FK.rates,best);
+    if(fAuto){toast(`নতুন ভাড়ার হার প্রযোজ্য হয়েছে: ${best.label||best.version} ✔`,5000);if(fState.route)fareCalc()}
+    else toast('অনলাইনে নতুন হার এসেছে; অটো আপডেট চালু করলে বসবে',5000);
+  }else if(manual)toast('ভাড়ার হার হালনাগাদই আছে ✔');
+  lsSet(FK.rates,RATES);rateInfo();
+}
+
+/* map + state */
+const fState={a:null,b:null,route:null,alts:[],pick:null};
+let fmap=null,fLayer=null,fMk={};
+function fareMap(){
+  if(fmap){setTimeout(()=>fmap.invalidateSize(),50);return}
+  fmap=L.map('fmap',{preferCanvas:true}).setView([23.75,90.39],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(fmap);
+  fLayer=L.layerGroup().addTo(fmap);
+  fmap.on('click',e=>{const w=fState.pick||(!fState.a?'a':!fState.b?'b':null);if(!w)return;fState.pick=null;$('fhint').classList.remove('on');
+    setPt(w,e.latlng.lat,e.latlng.lng,null)});
+  setTimeout(()=>fmap.invalidateSize(),50);
+}
+const pin=c=>L.divIcon({className:'',html:`<div style="width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${c};border:3px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)"></div>`,iconSize:[26,26],iconAnchor:[13,26]});
+async function setPt(w,la,lo,label){
+  fState[w]={la,lo,label:label||`${la.toFixed(5)}, ${lo.toFixed(5)}`};
+  const inp=$(w==='a'?'fFrom':'fTo');inp.value=fState[w].label;
+  if(fMk[w])fMk[w].remove();
+  fMk[w]=L.marker([la,lo],{icon:pin(w==='a'?'#006a4e':'#f42a41'),draggable:true}).addTo(fmap).bindTooltip(w==='a'?'শুরু':'গন্তব্য');
+  fMk[w].on('dragend',()=>{const p=fMk[w].getLatLng();setPt(w,p.lat,p.lng,null)});
+  $('fGo').disabled=!(fState.a&&fState.b);
+  if(!label){try{const r=await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=17&accept-language=bn,en&lat=${la}&lon=${lo}`);const j=await r.json();
+    if(j&&j.display_name&&fState[w]&&fState[w].la===la){fState[w].label=j.display_name.split(',').slice(0,3).join(',');inp.value=fState[w].label}}catch(e){}}
+  if(fState.a&&fState.b)fareRoute();else fmap.flyTo([la,lo],14);
+}
+/* place search: local gazetteer first (instant, offline), then OpenStreetMap */
+function localPlaces(q){
+  const s=q.toLowerCase(),out=[];
+  const hit=x=>(x.bn_name||'').includes(q)||(x.name||'').toLowerCase().includes(s);
+  G.po.forEach(p=>{if(out.length<4&&okLL(p.la,p.lo)&&(p.post_office.toLowerCase().includes(s)||String(p.postcode)===q))out.push({t:`${p.post_office} (${p.postcode}), ${p.thana}`,la:p.la,lo:p.lo,k:'ডাকঘর'})});
+  G.uni.forEach(u=>{if(out.length<8&&okLL(u.la,u.lo)&&hit(u))out.push({t:`${u.bn_name||u.name} ইউনিয়ন, ${u._p?.upa||''}, ${u._p?.dis||''}`,la:u.la,lo:u.lo,k:'ইউনিয়ন'})});
+  G.upa.forEach(u=>{const c=upaCenter(u.id);if(out.length<10&&c&&hit(u))out.push({t:`${u.bn_name||u.name} উপজেলা`,la:c[0],lo:c[1],k:'উপজেলা'})});
+  G.dis.forEach(d=>{if(out.length<12&&okLL(+d.lat,+d.lon)&&hit(d))out.push({t:`${d.bn_name||d.name} জেলা`,la:+d.lat,lo:+d.lon,k:'জেলা'})});
+  return out;
+}
+function sugBox(w){
+  const inp=$(w==='a'?'fFrom':'fTo'),box=$(w==='a'?'sFrom':'sTo');let tm,seq=0;
+  const show=list=>{box.innerHTML=list.map((x,i)=>`<button type="button" data-i="${i}"><b>${esc(x.k)}</b> · ${esc(x.t)}</button>`).join('');box.classList.toggle('on',list.length>0);box._l=list};
+  inp.addEventListener('input',()=>{clearTimeout(tm);const q=inp.value.trim();if(q.length<2){show([]);return}
+    const loc=localPlaces(q);show(loc);const my=++seq;
+    tm=setTimeout(async()=>{try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=bd&limit=6&accept-language=bn,en&q=${encodeURIComponent(q)}`);
+      const j=await r.json();if(my!==seq)return;show([...loc.slice(0,5),...j.map(p=>({t:p.display_name.split(',').slice(0,4).join(','),la:+p.lat,lo:+p.lon,k:'স্থান'}))])}catch(e){}},650)});
+  box.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const x=box._l[+b.dataset.i];show([]);setPt(w,x.la,x.lo,x.t)});
+  inp.addEventListener('blur',()=>setTimeout(()=>box.classList.remove('on'),200));
+}
+async function fareRoute(){
+  const {a,b}=fState;if(!a||!b)return;
+  $('fbusy').classList.add('on');fLayer.clearLayers();fState.alts=[];
+  try{
+    const r=await fetch(`https://router.project-osrm.org/route/v1/driving/${a.lo},${a.la};${b.lo},${b.la}?overview=full&geometries=geojson&alternatives=true`);
+    const j=await r.json();if(j.code!=='Ok'||!j.routes.length)throw 0;
+    fState.alts=j.routes.map(x=>({km:x.distance/1000,min:x.duration/60,geo:x.geometry.coordinates.map(c=>[c[1],c[0]])}));
+  }catch(e){
+    const km=map.distance([a.la,a.lo],[b.la,b.lo])/1000*1.3;fState.alts=[{km,min:km/30*60,geo:[[a.la,a.lo],[b.la,b.lo]],rough:1}];
+    toast('রাস্তার সার্ভারে পৌঁছানো যায়নি; সরলরেখা দূরত্ব × ১.৩ ধরে আনুমানিক হিসাব',5000);
+  }
+  $('fbusy').classList.remove('on');pickRoute(0);
+}
+function pickRoute(i){
+  fState.route=fState.alts[i];fLayer.clearLayers();
+  fState.alts.forEach((x,j)=>{if(j===i)return;L.polyline(x.geo,{color:'#64748b',weight:5,opacity:.55,dashArray:'6 8'}).addTo(fLayer).bindTooltip(`বিকল্প পথ: ${bn(x.km.toFixed(1))} কিমি (চাপ দিয়ে বাছুন)`).on('click',()=>pickRoute(j))});
+  const main=L.polyline(fState.route.geo,{color:'#006a4e',weight:7,opacity:.9}).addTo(fLayer);
+  L.polyline(fState.route.geo,{color:'#7ee2b8',weight:2,opacity:.9,dashArray:'2 10'}).addTo(fLayer);
+  fmap.fitBounds(main.getBounds(),{padding:[40,40]});fareCalc();
+}
+const inMetro=p=>p&&((p.la>23.66&&p.la<23.92&&p.lo>90.32&&p.lo<90.52)||(p.la>22.2&&p.la<22.45&&p.lo>91.74&&p.lo<91.92));
+function timeMode(){const v=$('fTime').value;if(v!=='auto')return v;const h=new Date().getHours();return h>=22||h<6?'night':(h>=8&&h<11)||(h>=17&&h<20)?'peak':'day'}
+function fareCalc(){
+  const R=RT(),rt=fState.route;if(!rt)return;
+  const d=rt.km,pax=Math.max(1,+$('fPax').value||1),tm=timeMode(),city=inMetro(fState.a)&&inMetro(fState.b);
+  const tf=city?{day:1.8,peak:2.5,night:1.1}[tm]:{day:1.2,peak:1.4,night:1}[tm];
+  const tmin=rt.min*tf,nX=tm==='night'?R.nightX:1,pX=tm==='peak'?R.peakX:1;
+  const out=[];
+  for(const [k,v] of Object.entries(R.v)){
+    const c={k,v,n:v.n,i:v.i,off:v.off};
+    if(v.maxKm&&d>v.maxKm){c.na=`${bn(v.maxKm)} কিমির বেশি দূরত্বে সাধারণত চলে না`;out.push(c);continue}
+    if(v.minKm&&d<v.minKm){c.na=`${bn(v.minKm)} কিমির কম দূরত্বে প্রযোজ্য নয়`;out.push(c);continue}
+    const units=v.per==='person'?pax:Math.ceil(pax/(v.cap||1));
+    if(v.m==='ride'){
+      const t=v.tx?tmin*v.tx:tmin;let f=Math.max(v.min,v.base+v.perKm*d+(v.perMin||0)*t)*nX*(v.surge?pX:1);
+      c.lo=r5(f*(1-v.spread))*units;c.hi=r5(f*(1+v.spread))*units;
+      c.basis=`আনুমানিক: শুরু ${m2(v.base)} + ${m2(v.perKm)}/কিমি${v.perMin?` + ${m2(v.perMin)}/মিনিট`:''}${nX>1?' · রাতের ভাড়া':''}${v.surge&&pX>1?' · ব্যস্ত সময়':''}`;
+      c.min=v.speed?d/v.speed*60:t;
+    }else if(v.m==='meter'){
+      const wait=Math.max(0,tmin-d/25*60);const f=Math.max(v.min,v.base+Math.max(0,d-v.firstKm)*v.perKm+v.wait*wait);
+      c.meter=Math.ceil(f)*units;c.lo=r5(f*v.mkLo*nX)*units;c.hi=r5(f*v.mkHi*nX)*units;
+      c.basis=`মিটারে (সরকারি): প্রথম ${bn(v.firstKm)} কিমি ${m2(v.base)}, পরে ${m2(v.perKm)}/কিমি, অপেক্ষা ${m2(v.wait)}/মিনিট`;c.min=tmin;
+    }else if(v.m==='bus'){
+      const [rate,mn,lab]=d>40?[v.long,v.longMin,'দূরপাল্লা/আন্তঃজেলা']:city?[v.city,v.cityMin,'ঢাকা-চট্টগ্রাম মহানগর']:[v.dtca,v.dtcaMin,'ঢাকার আশপাশ (ডিটিসিএ)/জেলা'];
+      const f=Math.max(mn,Math.round(rate*d));c.lo=c.hi=f*units;
+      c.basis=`সরকারি হার (${lab}): ${m2(rate)}/কিমি, সর্বনিম্ন ${m2(mn)}। ফেরি/সেতুর টোল আলাদা।`;c.min=tmin*1.3;
+    }else if(v.m==='train'){
+      const rk=d*v.railX;c.lo=Math.max(v.min,Math.round(v.shovon*rk))*units;c.hi=Math.max(v.min*2,Math.round(v.snigdha*rk))*units;
+      c.basis=`শোভন চেয়ার ${tk(c.lo/units)} · এসি চেয়ার (স্নিগ্ধা) ${tk(c.hi/units)}। রেলপথের দূরত্ব ও সেতুর পন্টেজ চার্জে ভিন্ন হতে পারে; সঠিক ভাড়া Rail Sheba-তে।`;c.min=rk/45*60+20;
+    }
+    out.push(c);
+  }
+  out.sort((x,y)=>(x.na?1:0)-(y.na?1:0)||x.lo-y.lo);
+  const tml={day:'দিন',peak:'ব্যস্ত সময়',night:'রাত'}[tm];
+  $('fSum').innerHTML=`<div><b>${bn(d.toFixed(1))} কিমি</b><span>রাস্তার দূরত্ব${rt.rough?' (আনুমানিক)':''}</span></div><div><b>${bn(Math.round(tmin))} মিনিট</b><span>গাড়িতে আনুমানিক সময় (${tml})</span></div><div><b>${bn(pax)} জন</b><span>যাত্রী</span></div>${fState.alts.length>1?`<div><b>${bn(fState.alts.length)}টি</b><span>পথ: ধূসর রেখায় চাপ দিয়ে বদলান</span></div>`:''}`;
+  const tmode=k=>['bus','acbus','train'].includes(k)?'transit':'driving';
+  $('fCards').innerHTML=out.map((c,i)=>`<article class="fc${c.na?' na':''}" style="animation-delay:${i*40}ms">
+    <div class="row" style="align-items:center;margin:0;flex:none"><span class="ico">${c.i}</span><h3 style="margin:0;font-size:17px;flex:1">${esc(c.n)}</h3><span class="tag ${c.off?'e':'ap'}" style="background:${c.off?'#006a4e':''}">${c.off?'সরকারি হার':'বাজারদর অনুমান'}</span></div>
+    ${c.na?`<div class="meta">${esc(c.na)}</div>`:`<div class="amt">${c.lo===c.hi?tk(c.lo):`${tk(c.lo)} – ${tk(c.hi)}`}</div>
+    ${c.meter!=null?`<div class="meta"><b>মিটারে: ${tk(c.meter)}</b> · বাস্তবে চালকেরা সাধারণত চান উপরের পরিসীমা</div>`:''}
+    <div class="meta">${c.v.per==='person'?(pax>1?`মোট ${bn(pax)} জনের`:'জনপ্রতি'):(pax>(c.v.cap||1)?`${bn(Math.ceil(pax/(c.v.cap||1)))}টি গাড়ি লাগবে`:'পুরো গাড়ি')} · প্রায় ${bn(Math.round(c.min))} মিনিট</div>
+    <div class="meta" style="font-size:12.5px">${esc(c.basis)}</div>
+    <a class="btn s" style="margin-top:auto" href="https://www.google.com/maps/dir/?api=1&origin=${fState.a.la},${fState.a.lo}&destination=${fState.b.la},${fState.b.lo}&travelmode=${tmode(c.k)}" target="_blank" rel="noopener">🗺 Google Maps-এ এই পথ</a>`}</article>`).join('');
+  const ga=`${fState.a.la},${fState.a.lo}`,gb=`${fState.b.la},${fState.b.lo}`;
+  $('gmLink').href=`https://www.google.com/maps/dir/?api=1&origin=${ga}&destination=${gb}&travelmode=driving`;$('gmRow').hidden=false;
+  if(!$('gmEmbed').hidden)gmEmbed(true);
+  $('fNote').textContent=`ভাড়ার হার: ${RT().label||RT().version}। ${RT().note||''} দূরত্ব: OpenStreetMap রাস্তার তথ্য (OSRM)। বাস্তব ভাড়া দরদাম, যানজট ও রুট অনুযায়ী কিছুটা কমবেশি হতে পারে।`;
+}
+function gmEmbed(on){
+  const box=$('gmEmbed');box.hidden=!on;$('gmEmbedBtn').textContent=on?'✕ Google ম্যাপ বন্ধ করুন':'👁 এখানেই Google ম্যাপে রাস্তা দেখুন';
+  if(on&&fState.a&&fState.b)box.innerHTML=`<iframe title="Google Maps রাস্তা" style="border:0;width:100%;height:100%" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?saddr=${fState.a.la},${fState.a.lo}&daddr=${fState.b.la},${fState.b.lo}&hl=bn&output=embed"></iframe>`;
+  else box.innerHTML='';
+}
+/* rate editor */
+const RLAB={base:'শুরুর ভাড়া ৳',perKm:'প্রতি কিমি ৳',perMin:'প্রতি মিনিট ৳',min:'সর্বনিম্ন ৳',firstKm:'প্রথম কত কিমি',wait:'অপেক্ষা ৳/মিনিট',mkLo:'বাজার গুণক (কম)',mkHi:'বাজার গুণক (বেশি)',city:'মহানগর ৳/কিমি',cityMin:'মহানগর সর্বনিম্ন ৳',dtca:'ডিটিসিএ ৳/কিমি',dtcaMin:'ডিটিসিএ সর্বনিম্ন ৳',long:'দূরপাল্লা ৳/কিমি',longMin:'দূরপাল্লা সর্বনিম্ন ৳',shovon:'শোভন চেয়ার ৳/কিমি',snigdha:'এসি চেয়ার ৳/কিমি',spread:'অনিশ্চয়তা (০–১)'};
+function rateEditor(){
+  const R=RT();
+  $('rBody').innerHTML=Object.entries(R.v).map(([k,v])=>`<fieldset class="rt"><legend>${v.i} ${esc(v.n)} <small>${v.off?'সরকারি':'বাজারদর'}</small></legend>${Object.keys(RLAB).filter(f=>v[f]!=null).map(f=>`<label>${RLAB[f]}<input type="number" step="0.01" data-k="${k}" data-f="${f}" value="${v[f]}"></label>`).join('')}</fieldset>`).join('')+
+    `<fieldset class="rt"><legend>সময়ভিত্তিক</legend><label>রাতের গুণক<input type="number" step="0.05" data-g="nightX" value="${R.nightX}"></label><label>ব্যস্ত সময়ের গুণক<input type="number" step="0.05" data-g="peakX" value="${R.peakX}"></label></fieldset>`+
+    `<p class="note">উৎস: ${(RATES.sources||[]).map(s=>`<a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)}</a>`).join(' · ')}</p>`;
+  $('rdlg').showModal();
+}
+
+{ // wire up
+  sugBox('a');sugBox('b');rateInfo();
+  $('fGo').onclick=()=>fareRoute();
+  $('fSwap').onclick=()=>{const a=fState.a,b=fState.b;fState.a=b;fState.b=a;if(b)setPt('a',b.la,b.lo,b.label);if(a)setPt('b',a.la,a.lo,a.label)};
+  const pickOn=w=>{fState.pick=w;$('fhint').textContent=w==='a'?'ম্যাপে শুরুর জায়গায় চাপুন':'ম্যাপে গন্তব্যে চাপুন';$('fhint').classList.add('on');$('fmap').scrollIntoView({block:'center'})};
+  $('fFromMap').onclick=()=>pickOn('a');$('fToMap').onclick=()=>pickOn('b');
+  $('fFromMe').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>setPt('a',p.coords.latitude,p.coords.longitude,'আমার অবস্থান'),()=>toast('লোকেশনের অনুমতি পাওয়া যায়নি')):toast('লোকেশন সুবিধা নেই');
+  $('fPax').oninput=$('fTime').onchange=()=>fState.route&&fareCalc();
+  $('gmEmbedBtn').onclick=()=>gmEmbed($('gmEmbed').hidden);
+  $('fAuto').onchange=()=>{fAuto=$('fAuto').checked;lsSet(FK.auto,fAuto);if(fAuto)fareUpdate(false);rateInfo();fState.route&&fareCalc()};
+  $('fCheck').onclick=()=>fareUpdate(true);
+  $('fEdit').onclick=rateEditor;
+  $('rClose').onclick=()=>$('rdlg').close();
+  $('rReset').onclick=()=>{try{localStorage.removeItem(FK.custom)}catch(e){}fAuto=true;lsSet(FK.auto,true);$('rdlg').close();rateInfo();fState.route&&fareCalc();toast('অনলাইনের সর্বশেষ হারে ফেরানো হয়েছে');fareUpdate(false)};
+  $('rSave').onclick=()=>{const R=JSON.parse(JSON.stringify(RT()));
+    document.querySelectorAll('#rBody input[data-k]').forEach(i=>{const v=parseFloat(i.value);if(!isNaN(v))R.v[i.dataset.k][i.dataset.f]=v});
+    document.querySelectorAll('#rBody input[data-g]').forEach(i=>{const v=parseFloat(i.value);if(!isNaN(v))R[i.dataset.g]=v});
+    R.label='নিজের হার ('+new Date().toLocaleDateString('bn-BD')+')';lsSet(FK.custom,R);fAuto=false;lsSet(FK.auto,false);
+    $('rdlg').close();rateInfo();fState.route&&fareCalc();toast('আপনার হার সংরক্ষিত; অটো আপডেট বন্ধ করা হলো')};
+  fareUpdate(false);setInterval(()=>{if(fAuto)fareUpdate(false)},6*3600e3);
+}
+function fareShow(){fareMap();rateInfo();if(fState.route)fareCalc()}
+
 function setKind(k){
   if(running&&k!==KIND)return toast('আগে চলমান সংরক্ষণ শেষ হতে দিন বা থামান');
   KIND=k;document.body.dataset.kind=k;
-  $('kindEdu').setAttribute('aria-pressed',k==='edu');$('kindMos').setAttribute('aria-pressed',k==='mosque');
+  $('kindEdu').setAttribute('aria-pressed',k==='edu');$('kindMos').setAttribute('aria-pressed',k==='mosque');$('kindFare').setAttribute('aria-pressed',k==='fare');
+  document.querySelectorAll('[data-part]').forEach(e=>e.hidden=(e.dataset.part==='fare')!==(k==='fare'));
+  if(k==='fare'){document.title='যাতায়াত ভাড়া · শিক্ষা অ্যাটলাস বাংলাদেশ';try{history.replaceState(null,'','#fare')}catch(e){}fareShow();return}
   const x=T();$('tExplore').textContent=x.ex;$('tGo').textContent=x.go;$('tDb').textContent=x.db;$('tAdd').textContent=x.add;$('tName').textContent=x.name;$('tMine').textContent=x.n;$('tDbN').textContent=x.n;
   $('aName').placeholder=x.ph;$('q').placeholder=x.q;document.title=x.title;
   $('eiinWrap').hidden=k!=='edu';document.querySelectorAll('[data-edu]').forEach(e=>e.hidden=k!=='edu');
   try{history.replaceState(null,'',k==='mosque'?'#mosque':location.pathname+location.search)}catch(e){}
+  setTimeout(()=>map.invalidateSize(),60);
   hidden.clear();items=[];legend();fillCat();renderMine();dbUI();draw();
   $('bStat').textContent='প্রস্তুত।';$('bBar').style.width='0';$('srcNote').textContent='';
   if(lastArea)search(lastArea);
 }
-$('kindEdu').onclick=()=>setKind('edu');$('kindMos').onclick=()=>setKind('mosque');
-window.addEventListener('hashchange',()=>{const k=location.hash==='#mosque'?'mosque':'edu';if(k!==KIND)setKind(k)});
+$('kindEdu').onclick=()=>setKind('edu');$('kindMos').onclick=()=>setKind('mosque');$('kindFare').onclick=()=>setKind('fare');
+window.addEventListener('hashchange',()=>{const k=hashKind();if(k!==KIND)setKind(k)});
 setKind(KIND);
 
 /* ---------- install as app (PWA) / Android app ---------- */

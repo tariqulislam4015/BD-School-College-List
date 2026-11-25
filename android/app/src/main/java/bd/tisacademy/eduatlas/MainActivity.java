@@ -70,6 +70,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri u = request.getUrl();
+                if (!request.isForMainFrame()) return false; // e.g. the embedded Google map
                 if (HOST.equals(u.getHost())) return false;
                 // YouTube, Facebook, WhatsApp, Google Maps, tel: … open in their own apps
                 try { startActivity(new Intent(Intent.ACTION_VIEW, u)); } catch (Exception ignored) { }

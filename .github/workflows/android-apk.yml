@@ -43,12 +43,20 @@ jobs:
       - name: Put the web app inside the APK
         run: |
           A=android/app/src/main/assets
-          cp index.html manifest.webmanifest "$A/"
+          cp index.html manifest.webmanifest fares.json "$A/"
           mkdir -p "$A/icons" && cp icons/*.png "$A/icons/"
 
       - name: Build signed APK
         working-directory: android
-        run: gradle assembleRelease --no-daemon --stacktrace
+        run: |
+          set +e
+          gradle assembleRelease --no-daemon --warning-mode=summary 2>&1 | tee build.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" != "0" ]; then
+            msg=$( (grep -A 25 "What went wrong" build.log || tail -40 build.log) | head -40 | sed 's/%/%25/g' | sed ':a;N;$!ba;s/\n/%0A/g')
+            echo "::error title=Gradle build failed::$msg"
+            exit "$code"
+          fi
 
       - name: Rename
         run: cp android/app/build/outputs/apk/release/app-release.apk EduAtlas-Bangladesh.apk

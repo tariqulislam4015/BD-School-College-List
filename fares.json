@@ -1,0 +1,136 @@
+{
+  "version": "2026-11-25",
+  "label": "২৫ নভেম্বর ২০২৬",
+  "note": "সরকারি হার: বাস (প্রজ্ঞাপন ২৩ সেপ্টেম্বর ২০২৬), সিএনজি মিটার (বিআরটিএ), ট্রেন (রেলের ভিত্তি হার)। রিকশা, ইজিবাইক, মোটরবাইক ও কারের সরকারি হার নেই, তাই বাজারদর অনুমান।",
+  "nightX": 1.2,
+  "peakX": 1.15,
+  "v": {
+    "rickshaw": {
+      "n": "রিকশা",
+      "i": "🚲",
+      "m": "ride",
+      "base": 20,
+      "perKm": 20,
+      "perMin": 0,
+      "min": 30,
+      "spread": 0.2,
+      "maxKm": 8,
+      "speed": 10,
+      "per": "vehicle",
+      "cap": 2,
+      "off": false
+    },
+    "easybike": {
+      "n": "অটোরিকশা / ইজিবাইক (শেয়ার)",
+      "i": "🔋",
+      "m": "ride",
+      "base": 5,
+      "perKm": 3.5,
+      "perMin": 0,
+      "min": 10,
+      "spread": 0.2,
+      "maxKm": 30,
+      "speed": 18,
+      "per": "person",
+      "off": false
+    },
+    "cng": {
+      "n": "সিএনজি অটোরিকশা",
+      "i": "🛺",
+      "m": "meter",
+      "base": 40,
+      "firstKm": 2,
+      "perKm": 12,
+      "wait": 2,
+      "min": 40,
+      "mkLo": 1.4,
+      "mkHi": 1.9,
+      "maxKm": 120,
+      "per": "vehicle",
+      "cap": 3,
+      "off": true
+    },
+    "bus": {
+      "n": "বাস (নন-এসি)",
+      "i": "🚌",
+      "m": "bus",
+      "city": 2.7,
+      "cityMin": 10,
+      "dtca": 2.6,
+      "dtcaMin": 8,
+      "long": 2.4,
+      "longMin": 10,
+      "per": "person",
+      "off": true
+    },
+    "acbus": {
+      "n": "এসি বাস (দূরপাল্লা)",
+      "i": "🚍",
+      "m": "ride",
+      "base": 0,
+      "perKm": 4.2,
+      "perMin": 0,
+      "min": 300,
+      "spread": 0.15,
+      "minKm": 60,
+      "per": "person",
+      "off": false
+    },
+    "train": {
+      "n": "ট্রেন",
+      "i": "🚆",
+      "m": "train",
+      "shovon": 1.2,
+      "snigdha": 2.25,
+      "railX": 1.08,
+      "min": 50,
+      "minKm": 25,
+      "per": "person",
+      "off": true
+    },
+    "bike": {
+      "n": "মোটরবাইক (রাইড শেয়ার)",
+      "i": "🏍️",
+      "m": "ride",
+      "base": 40,
+      "perKm": 18,
+      "perMin": 1,
+      "min": 60,
+      "spread": 0.15,
+      "maxKm": 80,
+      "tx": 0.75,
+      "per": "vehicle",
+      "cap": 1,
+      "surge": true,
+      "off": false
+    },
+    "car": {
+      "n": "প্রাইভেট কার (রাইড শেয়ার)",
+      "i": "🚗",
+      "m": "ride",
+      "base": 60,
+      "perKm": 26,
+      "perMin": 3,
+      "min": 200,
+      "spread": 0.15,
+      "per": "vehicle",
+      "cap": 4,
+      "surge": true,
+      "off": false
+    }
+  },
+  "sources": [
+    {
+      "t": "বাস ভাড়া: প্রজ্ঞাপন ২৩ সেপ্টেম্বর ২০২৬ (Dhaka Tribune)",
+      "u": "https://www.dhakatribune.com/bangladesh/420498/govt-issues-gazette-raising-bus-minibus-fares-by"
+    },
+    {
+      "t": "সিএনজি মিটার হার (TBS News)",
+      "u": "https://www.tbsnews.net/node/1066706"
+    },
+    {
+      "t": "ট্রেনের ভিত্তি হার (প্রথম আলো)",
+      "u": "https://en.prothomalo.com/bangladesh/yjr0esjz38"
+    }
+  ]
+}
